@@ -1,43 +1,51 @@
 package tsp;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static tsp.TSP.DisplayDataType.*;
+import static tsp.TSP.EdgeWeightType.*;
+
 /**
- * Travelling salesman problem
- * used for reading source files and writing solution
+ * Symmetric Travelling salesman problem
  *
  * @author Jagoda Wieczorek
  */
 public class TSP {
     private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
-    private static final ArrayList<String> ALLOWED_EDGE_WEIGHT_TYPES = new ArrayList<>(List.of("GEO"));
-    private static final ArrayList<String> ALLOWED_DISPLAY_DATA_TYPES = new ArrayList<>(List.of("COORD_DISPLAY"));
+    private static final ArrayList<EdgeWeightType> ALLOWED_EDGE_WEIGHT_TYPES = new ArrayList<>(List.of(GEO));
+    private static final ArrayList<DisplayDataType> ALLOWED_DISPLAY_DATA_TYPES = new ArrayList<>(List.of(COORD_DISPLAY));
 
     private String sourceFilename;
-    private ArrayList<Place> places;
+    private TreeMap<Integer, GeoPlace> places;
     private String name;
+    private DisplayDataType displayDataType;
+    private EdgeWeightType edgeWeightType;
 
     public TSP() {
-        this.places = new ArrayList<>();
+        this.places = new TreeMap<>();
     }
 
     /**
-     * @param sourceFilename File with places coordinates
+     * @param sourceFilename File with places' coordinates
+     */
+    public TSP(String sourceFilename) {
+        this.places = new TreeMap<>();
+        this.setFromFile(sourceFilename);
+    }
+
+    /**
+     * @param sourceFilename File with places' coordinates
      */
     public void setFromFile(String sourceFilename) {
         this.sourceFilename = sourceFilename;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(sourceFilename))) {
             String line;
-            String edgeWeightType;
-            String displayDataType;
 
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("NAME:")) {
@@ -49,13 +57,13 @@ public class TSP {
                         throw new IllegalArgumentException("Source file can't be of type: " + type);
                     }
                 } else if (line.startsWith("EDGE_WEIGHT_TYPE:")) {
-                    edgeWeightType = line.replace("EDGE_WEIGHT_TYPE:", "").trim();
+                    this.edgeWeightType = EdgeWeightType.valueOf(line.replace("EDGE_WEIGHT_TYPE:", "").trim());
 
-                    if (!ALLOWED_EDGE_WEIGHT_TYPES.contains(edgeWeightType)) {
+                    if (!ALLOWED_EDGE_WEIGHT_TYPES.contains(this.edgeWeightType)) {
                         throw new IllegalArgumentException(edgeWeightType + " edge weight type is not allowed to use");
                     }
                 } else if (line.startsWith("DISPLAY_DATA_TYPE:")) {
-                    displayDataType = line.replace("DISPLAY_DATA_TYPE:", "").trim();
+                    this.displayDataType = DisplayDataType.valueOf(line.replace("DISPLAY_DATA_TYPE:", "").trim());
 
                     if (!ALLOWED_DISPLAY_DATA_TYPES.contains(displayDataType)) {
                         throw new IllegalArgumentException(ALLOWED_DISPLAY_DATA_TYPES + " display data type is not allowed to use");
@@ -64,13 +72,29 @@ public class TSP {
                     String place;
                     while ((place = reader.readLine()) != null) {
                         String[] placeData = place.trim().split(" ");
-                        places.add(new Place((Integer.parseInt(placeData[0])), Float.parseFloat(placeData[1]), Float.parseFloat(placeData[2])));
+                        places.put(Integer.parseInt(placeData[0]), new GeoPlace(Integer.parseInt(placeData[0]), Float.parseFloat(placeData[1]), Float.parseFloat(placeData[2])));
                     }
                 }
             }
 
         } catch (IOException | IllegalArgumentException e) {
             LOGGER.log(Level.FINE, e.toString());
+        }
+    }
+
+    public void calculateAndAssignDistances() {
+        Set<Map.Entry<Integer, GeoPlace>> listOfGeoPlaces = places.entrySet();
+
+        for (Map.Entry<Integer, GeoPlace> startPlace : listOfGeoPlaces) {
+            try {
+                for (Map.Entry<Integer, GeoPlace> endPlace : listOfGeoPlaces) {
+                    if (!startPlace.getKey().equals(endPlace.getKey())) {
+                        startPlace.getValue().setDistanceTo(endPlace.getValue());
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(Level.WARNING, e.toString());
+            }
         }
     }
 
@@ -84,7 +108,7 @@ public class TSP {
     /**
      * @return List of places
      */
-    public ArrayList<Place> getPlaces() {
+    public TreeMap<Integer, GeoPlace> getGeoPlaces() {
         return places;
     }
 
@@ -93,5 +117,34 @@ public class TSP {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * @return places as TreeMap
+     */
+    public TreeMap<Integer, GeoPlace> getPlaces() {
+        return places;
+    }
+
+    /**
+     * @return Used display data type e.g. COORD_DISPLAY
+     */
+    public DisplayDataType getDisplayDataType() {
+        return displayDataType;
+    }
+
+    /**
+     * @return Used edge weight type e.g. GEO
+     */
+    public EdgeWeightType getEdgeWeightType() {
+        return edgeWeightType;
+    }
+
+    public enum EdgeWeightType {
+        GEO
+    }
+
+    public enum DisplayDataType {
+        COORD_DISPLAY
     }
 }
