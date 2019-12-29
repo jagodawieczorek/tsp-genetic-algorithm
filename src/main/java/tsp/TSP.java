@@ -26,6 +26,8 @@ public class TSP {
     private DisplayDataType displayDataType;
     private EdgeWeightType edgeWeightType;
 
+    private Integer startingPlace;
+
     public TSP() {
         this.places = new TreeMap<>();
     }
@@ -36,6 +38,7 @@ public class TSP {
     public TSP(String sourceFilename) {
         this.places = new TreeMap<>();
         this.setFromFile(sourceFilename);
+        this.setStartingPlace();
     }
 
     /**
@@ -80,6 +83,10 @@ public class TSP {
         } catch (IOException | IllegalArgumentException e) {
             LOGGER.log(Level.FINE, e.toString());
         }
+    }
+
+    public void setStartingPlace() {
+        this.startingPlace = this.getGeoPlaces().firstKey();
     }
 
     public void calculateAndAssignDistances() {
@@ -138,6 +145,13 @@ public class TSP {
      */
     public EdgeWeightType getEdgeWeightType() {
         return edgeWeightType;
+    }
+
+    /**
+     * @return Key of the starting place
+     */
+    public Integer getStartingPlace() {
+        return startingPlace;
     }
 
     public enum EdgeWeightType {
