@@ -34,6 +34,7 @@ public class Population {
             throw new IllegalArgumentException("Population size cannot be less or equal 0");
         }
 
+        individuals = new ArrayList<>();
         initializeRandom(size, startingPlace, places);
         evaluate();
     }
@@ -103,5 +104,14 @@ public class Population {
      */
     public int getAvgFitness() {
         return avgFitness;
+    }
+
+    @Override
+    public String toString() {
+        return "Population{" +
+                "bestFitness=" + bestFitness +
+                ", worstFitness=" + worstFitness +
+                ", avgFitness=" + avgFitness +
+                '}';
     }
 }

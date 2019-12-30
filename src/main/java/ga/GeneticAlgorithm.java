@@ -2,12 +2,16 @@ package ga;
 
 import tsp.TSP;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Genetic Algorithm
  *
  * @author Jagoda Wieczorek
  */
 public class GeneticAlgorithm {
+    private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
     private int populationSize;
     private int numberOfGenerations;
     private double mutationProbability;
@@ -45,7 +49,7 @@ public class GeneticAlgorithm {
             throw new IllegalArgumentException("Number of generations cannot be less or equal 0");
         }
 
-        if (mutationProbability < 0 || mutationProbability > 1 || crossoverProbability < 0 || crossoverProbability > 0) {
+        if (mutationProbability < 0 || mutationProbability > 1 || crossoverProbability < 0 || crossoverProbability > 1) {
             throw new IllegalArgumentException("Probability has to be in range <0,1>");
         }
 
@@ -58,7 +62,9 @@ public class GeneticAlgorithm {
     public void run() {
         // @TODO implement this methods according to steps described in the comments below
         // 1. initialize random population
+        Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces());
+        LOGGER.log(Level.INFO, population.toString());
         // 2. create generations based on previous one in a loop
-        // 3. write the result using TSP class
+        // 3. write result to a file by TSP class
     }
 }
