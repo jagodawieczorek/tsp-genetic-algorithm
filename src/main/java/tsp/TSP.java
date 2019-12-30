@@ -39,6 +39,7 @@ public class TSP {
         this.places = new TreeMap<>();
         this.setFromFile(sourceFilename);
         this.setStartingPlace();
+        this.calculateAndAssignDistances();
     }
 
     /**
@@ -90,6 +91,10 @@ public class TSP {
     }
 
     public void calculateAndAssignDistances() {
+        calculateDistances(this.places);
+    }
+
+    public static TreeMap<Integer, GeoPlace> calculateDistances(TreeMap<Integer, GeoPlace> places) {
         Set<Map.Entry<Integer, GeoPlace>> listOfGeoPlaces = places.entrySet();
 
         for (Map.Entry<Integer, GeoPlace> startPlace : listOfGeoPlaces) {
@@ -103,6 +108,8 @@ public class TSP {
                 LOGGER.log(Level.WARNING, e.toString());
             }
         }
+
+        return places;
     }
 
     /**

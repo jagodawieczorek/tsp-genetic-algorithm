@@ -21,8 +21,8 @@ class TSPTest {
     private static final String FILE_WITH_GROUP_OF_137_COORDINATES = "resources/tsp/gr137.tsp";
 
     @Test
-    @DisplayName("Create places map from test source file with 4 places")
-    void setFromFile_4places() {
+    @DisplayName("Should create places map from test source file with 4 places")
+    void shouldSetFromFile_4places() {
         // given
         TSP tsp = new TSP();
 
@@ -54,8 +54,8 @@ class TSPTest {
     }
 
     @Test
-    @DisplayName("Calculate and assign distances for 4 places")
-    void calculateAndAssignDistances_4places() {
+    @DisplayName("Should calculate and assign distances for 4 places")
+    void shouldCalculateAndAssignDistances_4places() {
         // given
         TSP tsp = new TSP(FILE_WITH_GROUP_OF_4_COORDINATES);
         // when
@@ -76,8 +76,8 @@ class TSPTest {
     }
 
     @Test
-    @DisplayName("Calculate and assign distances for 137 places")
-    void calculateAndAssignDistances_137places() {
+    @DisplayName("Should calculate and assign distances for 137 places")
+    void shouldCalculateAndAssignDistances_137places() {
         // given
         TSP tsp = new TSP(FILE_WITH_GROUP_OF_137_COORDINATES);
         // when
@@ -88,8 +88,8 @@ class TSPTest {
     }
 
     @Test
-    @DisplayName("Assign starting place which is first place on the list")
-    void setStartingPlace() {
+    @DisplayName("Should assign starting place which is first place on the list")
+    void shouldSetStartingPlace() {
         // given
         TSP tsp = new TSP();
         tsp.setFromFile(FILE_WITH_GROUP_OF_4_COORDINATES);

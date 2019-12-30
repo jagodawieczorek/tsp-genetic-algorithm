@@ -13,8 +13,8 @@ import static org.assertj.core.api.Assertions.*;
 class GeoPlaceTest {
 
     @Test
-    @DisplayName("Set geographical distance from one place to another")
-    void setDistanceTo() {
+    @DisplayName("Should set geographical distance from one place to another")
+    void shouldSetDistanceTo() {
         // given
         GeoPlace startGeoPlace = new GeoPlace(1, 71.17f, -156.47f);
         GeoPlace endGeoPlace = new GeoPlace(2, 64.51f, -147.43f);

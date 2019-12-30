@@ -78,6 +78,14 @@ public class GeoPlace {
     }
 
     /**
+     * @param geoPlaceId Second GeoPlace ID to which the distance is measured
+     * @return Distance to second GeoPlace
+     */
+    public Integer getDistanceTo(int geoPlaceId) {
+        return this.getDistances().get(geoPlaceId);
+    }
+
+    /**
      * @return GeoPlace id according to the source file
      */
     public int getId() {
