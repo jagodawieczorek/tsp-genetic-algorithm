@@ -21,7 +21,7 @@ public class TSP {
     private static final ArrayList<DisplayDataType> ALLOWED_DISPLAY_DATA_TYPES = new ArrayList<>(List.of(COORD_DISPLAY));
 
     private String sourceFilename;
-    private TreeMap<Integer, GeoPlace> places;
+    private TreeMap<Integer, Place> places;
     private String name;
     private DisplayDataType displayDataType;
     private EdgeWeightType edgeWeightType;
@@ -76,7 +76,7 @@ public class TSP {
                     String place;
                     while ((place = reader.readLine()) != null) {
                         String[] placeData = place.trim().split(" ");
-                        places.put(Integer.parseInt(placeData[0]), new GeoPlace(Integer.parseInt(placeData[0]), Float.parseFloat(placeData[1]), Float.parseFloat(placeData[2])));
+                        places.put(Integer.parseInt(placeData[0]), new Place(Integer.parseInt(placeData[0]), Float.parseFloat(placeData[1]), Float.parseFloat(placeData[2])));
                     }
                 }
             }
@@ -87,19 +87,19 @@ public class TSP {
     }
 
     public void setStartingPlace() {
-        this.startingPlace = this.getGeoPlaces().firstKey();
+        this.startingPlace = this.getPlaces().firstKey();
     }
 
     public void calculateAndAssignDistances() {
         calculateDistances(this.places);
     }
 
-    public static TreeMap<Integer, GeoPlace> calculateDistances(TreeMap<Integer, GeoPlace> places) {
-        Set<Map.Entry<Integer, GeoPlace>> listOfGeoPlaces = places.entrySet();
+    public static TreeMap<Integer, Place> calculateDistances(TreeMap<Integer, Place> places) {
+        Set<Map.Entry<Integer, Place>> listOfPlaces = places.entrySet();
 
-        for (Map.Entry<Integer, GeoPlace> startPlace : listOfGeoPlaces) {
+        for (Map.Entry<Integer, Place> startPlace : listOfPlaces) {
             try {
-                for (Map.Entry<Integer, GeoPlace> endPlace : listOfGeoPlaces) {
+                for (Map.Entry<Integer, Place> endPlace : listOfPlaces) {
                     if (!startPlace.getKey().equals(endPlace.getKey())) {
                         startPlace.getValue().setDistanceTo(endPlace.getValue());
                     }
@@ -122,7 +122,7 @@ public class TSP {
     /**
      * @return List of places
      */
-    public TreeMap<Integer, GeoPlace> getGeoPlaces() {
+    public TreeMap<Integer, Place> getPlaces() {
         return places;
     }
 
@@ -131,13 +131,6 @@ public class TSP {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @return places as TreeMap
-     */
-    public TreeMap<Integer, GeoPlace> getPlaces() {
-        return places;
     }
 
     /**

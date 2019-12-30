@@ -3,11 +3,11 @@ package tsp;
 import java.util.TreeMap;
 
 /**
- * GeoPlace on the map
+ * Place on the map
  *
  * @author Jagoda Wieczorek
  */
-public class GeoPlace {
+public class Place {
     private static final Double PI = 3.141592;
     private static final Float EARTH_EQUATORIAL_RADIUS = 6378.388f;
 
@@ -23,7 +23,7 @@ public class GeoPlace {
      * @param latitude  latitude of the place
      * @param longitude longitude of the place
      */
-    public GeoPlace(int id, Float latitude, Float longitude) {
+    public Place(int id, Float latitude, Float longitude) {
         this.id = id;
         this.latitude = latitude;
         this.setRadiansLatitude(latitude);
@@ -53,40 +53,40 @@ public class GeoPlace {
     }
 
     /**
-     * @param geoPlace Second GeoPlace
+     * @param Place Second Place
      */
-    public void setDistanceTo(GeoPlace geoPlace) throws IllegalArgumentException {
-        if (geoPlace.getId() == this.getId()) {
+    public void setDistanceTo(Place Place) throws IllegalArgumentException {
+        if (Place.getId() == this.getId()) {
             throw new IllegalArgumentException("Cannot set distance to a place with the same ID");
-        } else if (geoPlace.getDistances().containsKey(this.getId())) {
-            this.getDistances().put(geoPlace.getId(), geoPlace.getDistanceTo(this));
+        } else if (Place.getDistances().containsKey(this.getId())) {
+            this.getDistances().put(Place.getId(), Place.getDistanceTo(this));
         } else {
-            double q1 = Math.cos(this.getRadiansLongitude() - geoPlace.getRadiansLongitude());
-            double q2 = Math.cos(this.getRadiansLatitude() - geoPlace.getRadiansLatitude());
-            double q3 = Math.cos(this.getRadiansLatitude() + geoPlace.getRadiansLatitude());
+            double q1 = Math.cos(this.getRadiansLongitude() - Place.getRadiansLongitude());
+            double q2 = Math.cos(this.getRadiansLatitude() - Place.getRadiansLatitude());
+            double q3 = Math.cos(this.getRadiansLatitude() + Place.getRadiansLatitude());
             int distance = (int) (EARTH_EQUATORIAL_RADIUS * Math.acos(0.5 * ((1.0 + q1) * q2 - (1.0 - q1) * q3)) + 1.0);
-            this.getDistances().put(geoPlace.getId(), distance);
+            this.getDistances().put(Place.getId(), distance);
         }
     }
 
     /**
-     * @param geoPlace Second GeoPlace to which the distance is measured
-     * @return Distance to second GeoPlace
+     * @param Place Second Place to which the distance is measured
+     * @return Distance to second Place
      */
-    public Integer getDistanceTo(GeoPlace geoPlace) {
-        return this.getDistances().get(geoPlace.getId());
+    public Integer getDistanceTo(Place Place) {
+        return this.getDistances().get(Place.getId());
     }
 
     /**
-     * @param geoPlaceId Second GeoPlace ID to which the distance is measured
-     * @return Distance to second GeoPlace
+     * @param PlaceId Second Place ID to which the distance is measured
+     * @return Distance to second Place
      */
-    public Integer getDistanceTo(int geoPlaceId) {
-        return this.getDistances().get(geoPlaceId);
+    public Integer getDistanceTo(int PlaceId) {
+        return this.getDistances().get(PlaceId);
     }
 
     /**
-     * @return GeoPlace id according to the source file
+     * @return Place id according to the source file
      */
     public int getId() {
         return id;

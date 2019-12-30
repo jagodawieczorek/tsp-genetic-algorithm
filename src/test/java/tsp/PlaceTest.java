@@ -6,21 +6,21 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests for GeoPlace
+ * Tests for Place
  *
  * @author Jagoda Wieczorek
  */
-class GeoPlaceTest {
+class PlaceTest {
 
     @Test
     @DisplayName("Should set geographical distance from one place to another")
     void shouldSetDistanceTo() {
         // given
-        GeoPlace startGeoPlace = new GeoPlace(1, 71.17f, -156.47f);
-        GeoPlace endGeoPlace = new GeoPlace(2, 64.51f, -147.43f);
+        Place startPlace = new Place(1, 71.17f, -156.47f);
+        Place endPlace = new Place(2, 64.51f, -147.43f);
         // when
-        startGeoPlace.setDistanceTo(endGeoPlace);
+        startPlace.setDistanceTo(endPlace);
         // then
-        assertThat(startGeoPlace.getDistances().get(endGeoPlace.getId())).isEqualTo(876);
+        assertThat(startPlace.getDistances().get(endPlace.getId())).isEqualTo(876);
     }
 }

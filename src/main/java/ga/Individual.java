@@ -1,6 +1,6 @@
 package ga;
 
-import tsp.GeoPlace;
+import tsp.Place;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  *
  * @author Jagoda Wieczorek
  */
-public class Individual {
+public class Individual implements Comparable<Individual> {
     private ArrayList<Integer> genome;
     private int fitness;
     private int startingGen;
@@ -33,12 +33,27 @@ public class Individual {
      * @param places      all available places
      * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
      */
-    public Individual(int minGen, int maxGen, int startingGen, TreeMap<Integer, GeoPlace> places) throws IllegalArgumentException {
+    public Individual(int minGen, int maxGen, int startingGen, TreeMap<Integer, Place> places) throws IllegalArgumentException {
         this(minGen, maxGen, startingGen);
 
         this.genome = this.randomGenome(minGen, maxGen, startingGen);
         this.fitness = this.calculateFitness(places);
     }
+
+    /**
+     * Constructor for Individual with initial random genome based on provided places
+     *
+     * @param startingGen starting gen
+     * @param places      all available places
+     * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
+     */
+    public Individual(int startingGen, TreeMap<Integer, Place> places) throws IllegalArgumentException {
+        this(places.firstKey(), places.lastKey(), startingGen);
+
+        this.genome = this.randomGenome(minGen, maxGen, startingGen);
+        this.fitness = this.calculateFitness(places);
+    }
+
 
     /**
      * Constructor for Individual with initial random genome
@@ -81,7 +96,7 @@ public class Individual {
     /**
      * @return fitness (the lower the better)
      */
-    public int calculateFitness(TreeMap<Integer, GeoPlace> places) {
+    public int calculateFitness(TreeMap<Integer, Place> places) {
         int cost = 0;
         Integer currentGen = startingGen;
 
@@ -128,5 +143,10 @@ public class Individual {
      */
     public int getMaxGen() {
         return maxGen;
+    }
+
+    @Override
+    public int compareTo(Individual individual) {
+        return this.getFitness() >= individual.getFitness() ? this.getFitness() > individual.getFitness() ? -1 : 0 : 1;
     }
 }

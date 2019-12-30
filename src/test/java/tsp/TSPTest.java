@@ -31,7 +31,7 @@ class TSPTest {
 
         // then
         assertEquals("gr4", tsp.getName());
-        TreeMap<Integer, GeoPlace> places = tsp.getGeoPlaces();
+        TreeMap<Integer, Place> places = tsp.getPlaces();
         assertEquals(4, places.size());
 
         assertEquals(71.17f, places.get(1).getLatitude());
@@ -46,9 +46,9 @@ class TSPTest {
         assertEquals(1.1202103206589311, places.get(2).getRadiansLatitude());
         assertEquals(-2.5781414439841943, places.get(2).getRadiansLongitude());
 
-        Set<Map.Entry<Integer, GeoPlace>> listOfGeoPlaces = places.entrySet();
+        Set<Map.Entry<Integer, Place>> listOfPlaces = places.entrySet();
 
-        for (Map.Entry<Integer, GeoPlace> place : listOfGeoPlaces) {
+        for (Map.Entry<Integer, Place> place : listOfPlaces) {
             assertEquals(place.getKey(), place.getValue().getId());
         }
     }
@@ -61,7 +61,7 @@ class TSPTest {
         // when
         tsp.calculateAndAssignDistances();
         // then
-        TreeMap<Integer, GeoPlace> places = tsp.getGeoPlaces();
+        TreeMap<Integer, Place> places = tsp.getPlaces();
         assertThat(places.get(1).getDistances()).containsOnlyKeys(2, 3, 4);
         assertThat(places.get(1).getDistances().get(2)).isNotNull();
         assertThat(places.get(1).getDistances().get(3)).isNotNull();
@@ -83,7 +83,7 @@ class TSPTest {
         // when
         tsp.calculateAndAssignDistances();
         // then
-        TreeMap<Integer, GeoPlace> places = tsp.getGeoPlaces();
+        TreeMap<Integer, Place> places = tsp.getPlaces();
         assertThat(places.get(1).getDistances().size()).isEqualTo(136);
     }
 
