@@ -36,7 +36,7 @@ public class TSP {
      * @param sourceFilename File with places' coordinates
      */
     public TSP(String sourceFilename) {
-        this.places = new TreeMap<>();
+        this();
         this.setFromFile(sourceFilename);
         this.setStartingPlace();
         this.calculateAndAssignDistances();

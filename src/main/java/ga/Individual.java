@@ -25,6 +25,8 @@ public class Individual {
     }
 
     /**
+     * Constructor for Individual with initial random genome based on provided places
+     *
      * @param minGen      minimum gen value (first possible key)
      * @param maxGen      maximum gen value (last possible key)
      * @param startingGen starting gen
@@ -39,6 +41,8 @@ public class Individual {
     }
 
     /**
+     * Constructor for Individual with initial random genome
+     *
      * @param minGen      minimum gen value (first possible key)
      * @param maxGen      maximum gen value (last possible key)
      * @param startingGen starting gen
