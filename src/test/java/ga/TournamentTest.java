@@ -1,6 +1,7 @@
 package ga;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TournamentTest {
 
     @Test
+    @DisplayName("Should select best individual from the whole provided sample list")
     void shouldSelectBestIndividualFromTheWholeList() {
         // given
         Tournament tournament = new Tournament();
@@ -29,6 +31,7 @@ class TournamentTest {
     }
 
     @Test
+    @DisplayName("Should throw an IllegalArgumentException when amount of tournament competitors is not provided")
     void shouldThrowAnIllegalArgumentException_whenCountIsNotProvided() {
         // given
         Tournament tournament = new Tournament();
@@ -40,6 +43,7 @@ class TournamentTest {
     }
 
     @Test
+    @DisplayName("Should throw an IllegalArgumentException when amount of tournament competitors is too big")
     void shouldThrowAnIllegalArgumentException_whenCountIsBiggerThanInitialListSize() {
         // given
         Tournament tournament = new Tournament();
