@@ -25,6 +25,15 @@ public class Individual implements Comparable<Individual> {
     }
 
     /**
+     * Constructor for Individual with defined fitness
+     *
+     * @param fitness individual's fitness (the lower the better)
+     */
+    public Individual(int fitness) {
+        this.fitness = fitness;
+    }
+
+    /**
      * Constructor for Individual with initial random genome based on provided places
      *
      * @param minGen      minimum gen value (first possible key)
