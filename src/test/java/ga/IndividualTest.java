@@ -2,6 +2,7 @@ package ga;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -114,6 +115,18 @@ class IndividualTest {
         int result = individual.compareTo(individual2);
         // then
         assertThat(result).isEqualTo(0);
+    }
+
+    @DisplayName("Should perform individual's mutation")
+    @RepeatedTest(10)
+    void shouldMutate() {
+        // given
+        Individual individual = new Individual(new ArrayList<>(List.of(1, 2, 3, 4, 5)));
+        // when
+        individual.mutate();
+        // then
+        assertThat(individual.getGenome().get(0)).isEqualTo(1);
+        assertThat(individual.getGenome()).containsExactlyInAnyOrder(1, 2, 3, 4, 5);
     }
 
     /**

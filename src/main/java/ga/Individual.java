@@ -2,10 +2,7 @@ package ga;
 
 import tsp.Place;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -137,6 +134,15 @@ public class Individual implements Comparable<Individual> {
         cost += places.get(currentGen).getDistanceTo(startingGen);
 
         return cost;
+    }
+
+    public void mutate() {
+        Random random = new Random();
+        ArrayList<Integer> newGenome = genome;
+
+        Collections.swap(newGenome, random.nextInt(genome.size() - 1) + 1, random.nextInt(genome.size() - 1) + 1);
+
+        genome = newGenome;
     }
 
     /**
