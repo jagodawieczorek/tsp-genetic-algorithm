@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Runner {
     public static void main(String[] args) {
         TSP tsp = new TSP("resources/tsp/gr96.tsp");
-        GeneticAlgorithm geneticAlgorithm = GeneticAlgorithm.create(500, 300, 0.3f, 0.8f, tsp, new Tournament(180), new PartiallyMappedCrossover());
+        GeneticAlgorithm geneticAlgorithm = GeneticAlgorithm.create(400, 1000, 0.4f, 0.8f, tsp, new Tournament(10), new PartiallyMappedCrossover());
         Individual individual = geneticAlgorithm.run();
         Path pathObj = new Path(tsp.getPlaces(), individual.getGenome());
         ArrayList<Place> path = pathObj.getPath();

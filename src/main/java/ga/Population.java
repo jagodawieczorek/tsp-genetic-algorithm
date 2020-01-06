@@ -16,6 +16,7 @@ public class Population {
     private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
 
     private ArrayList<Individual> individuals;
+    private List<Individual> bestIndividuals;
     private Individual bestIndividual;
     private Individual worstIndividual;
     private int avgFitness;
@@ -25,15 +26,14 @@ public class Population {
 
     public Population(Population population, TreeMap<Integer, Place> places, float mutationProbability, float crossoverProbability, Selector selector, Crossover crossover) {
         individuals = new ArrayList<>();
-        individuals.add(population.getIndividuals().get(0));
         Random random = new Random();
         int populationSize = population.getIndividuals().size();
 
         while (individuals.size() < populationSize) {
-            Individual individual = selector.select(population.getIndividuals());
+            Individual individual = selector.select(population.getBestIndividuals());
 
             if (crossoverProbability > random.nextFloat()) {
-                Individual parent2 = selector.select(population.getIndividuals());
+                Individual parent2 = selector.select(population.getBestIndividuals());
                 individual = crossover.perform(individual, parent2);
             }
 
@@ -45,6 +45,12 @@ public class Population {
 
             individuals.add(individual);
         }
+
+//        populationSize = population.getIndividuals().size();
+//
+//        while (individuals.size() < populationSize) {
+//            individuals.add(new Individual(population.getBestIndividual().getStartingGen(), places));
+//        }
 
         evaluate();
     }
@@ -98,6 +104,7 @@ public class Population {
             this.bestIndividual = bestIndividual;
             this.worstIndividual = worstIndividual;
             this.avgFitness = sum / individuals.size();
+            this.setBestIndividuals(0.1f);
         } catch (NullPointerException e) {
             LOGGER.log(Level.FINE, e.toString());
         }
@@ -108,6 +115,14 @@ public class Population {
      */
     public ArrayList<Individual> getIndividuals() {
         return individuals;
+    }
+
+    public void setBestIndividuals(float part) {
+        ArrayList<Individual> sortedIndividuals = individuals;
+        Collections.sort(sortedIndividuals);
+        int lastIndividualIndex = (int) (part * sortedIndividuals.size());
+
+        bestIndividuals = sortedIndividuals.subList(lastIndividualIndex, individuals.size());
     }
 
     /**
@@ -143,6 +158,10 @@ public class Population {
      */
     public Individual getWorstIndividual() {
         return worstIndividual;
+    }
+
+    public List<Individual> getBestIndividuals() {
+        return bestIndividuals;
     }
 
     /**
