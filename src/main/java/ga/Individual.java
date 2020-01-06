@@ -34,6 +34,26 @@ public class Individual implements Comparable<Individual> {
     }
 
     /**
+     * Constructor for Individual with defined genome
+     *
+     * @param genome individual's genome
+     */
+    public Individual(ArrayList<Integer> genome) {
+        this.genome = genome;
+    }
+
+    /**
+     * Constructor for Individual with defined genome
+     *
+     * @param genome individual's genome
+     * @param places all available places
+     */
+    public Individual(ArrayList<Integer> genome, TreeMap<Integer, Place> places) {
+        this.genome = genome;
+        this.fitness = this.calculateFitness(places);
+    }
+
+    /**
      * Constructor for Individual with initial random genome based on provided places
      *
      * @param minGen      minimum gen value (first possible key)
@@ -152,6 +172,15 @@ public class Individual implements Comparable<Individual> {
      */
     public int getMaxGen() {
         return maxGen;
+    }
+
+    /**
+     * Set fitness based on genome and places
+     *
+     * @param places all available places
+     */
+    public void setFitness(TreeMap<Integer, Place> places) {
+        this.fitness = calculateFitness(places);
     }
 
     @Override
