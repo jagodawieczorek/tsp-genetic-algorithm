@@ -15,7 +15,7 @@ public class PartiallyMappedCrossover implements Crossover {
     @Override
     public Individual perform(Individual parent1, Individual parent2) {
         Random random = new Random();
-        int breakpoint = random.nextInt();
+        int breakpoint = random.nextInt(parent1.getGenome().size() - 1);
 
         return perform(parent1, parent2, breakpoint);
     }

@@ -1,6 +1,7 @@
 package ga;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ class PartiallyMappedCrossoverTest {
     void shouldReturnNewValidChild() {
         // given
         PartiallyMappedCrossover crossover = new PartiallyMappedCrossover();
-        Individual parent1 = getParent(2, 4, 3, 1, 6, 5);
-        Individual parent2 = getParent(4, 6, 5, 3, 1, 2);
+        Individual parent1 = getParent1();
+        Individual parent2 = getParent2();
         int breakpoint = 3;
         // when
         Individual child = crossover.perform(parent1, parent2, breakpoint);
@@ -33,13 +34,34 @@ class PartiallyMappedCrossoverTest {
     void shouldThrowIllegalArgumentException_whenBreakpointIsOutOfBounds() {
         // given
         PartiallyMappedCrossover crossover = new PartiallyMappedCrossover();
-        Individual parent1 = getParent(2, 4, 3, 1, 6, 5);
-        Individual parent2 = getParent(4, 6, 5, 3, 1, 2);
+        Individual parent1 = getParent1();
+        Individual parent2 = getParent2();
         int breakpoint = 6;
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> crossover.perform(parent1, parent2, breakpoint))
                 .withMessage(String.format("Crossover breakpoint cannot be bigger than %s", parent1.getGenome().size() - 1));
+    }
+
+    @DisplayName("Should NOT throw any exceptions using random method for breakpoint")
+    @RepeatedTest(20)
+    void shouldNotThrowAnyException_usingRandomMethodForBreakpoint() {
+        // given
+        PartiallyMappedCrossover crossover = new PartiallyMappedCrossover();
+        Individual parent1 = getParent1();
+        Individual parent2 = getParent2();
+        // when
+        Individual individual = crossover.perform(parent1, parent2);
+        // then
+        assertThat(individual).isNotNull();
+    }
+
+    private Individual getParent2() {
+        return getParent(4, 6, 5, 3, 1, 2);
+    }
+
+    private Individual getParent1() {
+        return getParent(2, 4, 3, 1, 6, 5);
     }
 
     private Individual getParent(int i, int i2, int i3, int i4, int i5, int i6) {
