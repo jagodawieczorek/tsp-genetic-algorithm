@@ -19,6 +19,25 @@ public class GeneticAlgorithm {
     private float mutationProbability;
     private float crossoverProbability;
     private TSP tsp;
+    private Selector selector;
+    private Crossover crossover;
+
+    /**
+     * GA constructor for TSP
+     *
+     * @param populationSize       Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations  Number of generations
+     * @param mutationProbability  Probability that mutation occurs
+     * @param crossoverProbability Probability that crossover occurs
+     * @param tsp                  Travelling salesman problem
+     * @param selector             Selector (e.g. Tournament / Roulette / .. )
+     * @param crossover            Crossover type (e.g. PMX)
+     */
+    public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover) {
+        this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp);
+        this.selector = selector;
+        this.crossover = crossover;
+    }
 
     /**
      * GA constructor for TSP
@@ -61,8 +80,11 @@ public class GeneticAlgorithm {
         this.crossoverProbability = crossoverProbability;
     }
 
+    public static GeneticAlgorithm create(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover) {
+        return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover);
+    }
+
     public void run() {
-        // @TODO implement this methods according to steps described in the comments below
         // 1. initialize random population
         Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces());
         LOGGER.log(Level.INFO, population.toString());
@@ -70,11 +92,11 @@ public class GeneticAlgorithm {
         int currentGeneration = 0;
 
         while (currentGeneration < numberOfGenerations) {
-            population = new Population(population, tsp.getPlaces(), mutationProbability, crossoverProbability);
+            population = new Population(population, tsp.getPlaces(), mutationProbability, crossoverProbability, selector, crossover);
             LOGGER.log(Level.INFO, population.toString());
             currentGeneration++;
         }
 
-        // 3. write result to a file by TSP class
+        // @TODO write result to a file by TSP class
     }
 }

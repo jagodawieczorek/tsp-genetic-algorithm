@@ -15,4 +15,17 @@ interface Selector {
      * @return winner individual
      */
     Individual select(List<Individual> individuals, int... params);
+
+    /**
+     * @param individuals List of individuals
+     * @return winner individual
+     */
+    Individual select(List<Individual> individuals);
+
+    /**
+     * Get all params
+     *
+     * @return params
+     */
+    int[] getParams();
 }

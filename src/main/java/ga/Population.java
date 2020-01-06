@@ -23,20 +23,17 @@ public class Population {
     public Population() {
     }
 
-    public Population(Population population, TreeMap<Integer, Place> places, float mutationProbability, float crossoverProbability) {
+    public Population(Population population, TreeMap<Integer, Place> places, float mutationProbability, float crossoverProbability, Selector selector, Crossover crossover) {
         individuals = new ArrayList<>();
         individuals.add(population.getIndividuals().get(0));
         Random random = new Random();
-        int currentIndividual = 0;
         int populationSize = population.getIndividuals().size();
-        Selector selector = new Tournament();
-        Crossover crossover = new PartiallyMappedCrossover();
 
         while (individuals.size() < populationSize) {
-            Individual individual = selector.select(population.getIndividuals(), 20);
+            Individual individual = selector.select(population.getIndividuals());
 
             if (crossoverProbability > random.nextFloat()) {
-                Individual parent2 = selector.select(population.getIndividuals(), 20);
+                Individual parent2 = selector.select(population.getIndividuals());
                 individual = crossover.perform(individual, parent2);
             }
 
