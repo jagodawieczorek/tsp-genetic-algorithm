@@ -37,6 +37,7 @@ public class Individual implements Comparable<Individual> {
      */
     public Individual(ArrayList<Integer> genome) {
         this.genome = genome;
+        this.startingGen = genome.get(0);
     }
 
     /**

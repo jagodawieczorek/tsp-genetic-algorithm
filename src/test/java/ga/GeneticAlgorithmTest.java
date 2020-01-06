@@ -20,8 +20,8 @@ class GeneticAlgorithmTest {
         // given
         var populationSize = -1;
         var numberOfGenerations = 100;
-        var mutationProbability = 0.1;
-        var crossoverProbability = 0.1;
+        var mutationProbability = 0.1f;
+        var crossoverProbability = 0.1f;
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability))
@@ -34,8 +34,8 @@ class GeneticAlgorithmTest {
         // given
         var populationSize = 300;
         var numberOfGenerations = -6;
-        var mutationProbability = 0.1;
-        var crossoverProbability = 0.1;
+        var mutationProbability = 0.1f;
+        var crossoverProbability = 0.1f;
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability))
@@ -48,8 +48,8 @@ class GeneticAlgorithmTest {
         // given
         var populationSize = 300;
         var numberOfGenerations = 100;
-        var mutationProbability = 6;
-        var crossoverProbability = 0.1;
+        var mutationProbability = 6f;
+        var crossoverProbability = 0.1f;
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability))

@@ -3,8 +3,7 @@ package ga;
 import tsp.Place;
 import tsp.TSP;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +21,35 @@ public class Population {
     private int avgFitness;
 
     public Population() {
+    }
+
+    public Population(Population population, TreeMap<Integer, Place> places, float mutationProbability, float crossoverProbability) {
+        individuals = new ArrayList<>();
+        individuals.add(population.getIndividuals().get(0));
+        Random random = new Random();
+        int currentIndividual = 0;
+        int populationSize = population.getIndividuals().size();
+        Selector selector = new Tournament();
+        Crossover crossover = new PartiallyMappedCrossover();
+
+        while (individuals.size() < populationSize) {
+            Individual individual = selector.select(population.getIndividuals(), 20);
+
+            if (crossoverProbability > random.nextFloat()) {
+                Individual parent2 = selector.select(population.getIndividuals(), 20);
+                individual = crossover.perform(individual, parent2);
+            }
+
+            if (mutationProbability > random.nextFloat()) {
+                individual.mutate();
+            }
+
+            individual.setFitness(places);
+
+            individuals.add(individual);
+        }
+
+        evaluate();
     }
 
     /**
@@ -104,6 +132,29 @@ public class Population {
      */
     public int getAvgFitness() {
         return avgFitness;
+    }
+
+    /**
+     * Random sublist generator using Fisher-Yates-Durstenfeld shuffle algorithm
+     *
+     * @param individuals initial list with individuals
+     * @param count       size of a sublist on output
+     * @return sublist with random individuals
+     */
+    public static List<Individual> getRandomSublist(List<Individual> individuals, int count) {
+        int size = individuals.size();
+
+        if (size < count) {
+            throw new IllegalArgumentException(String.format("The size of the population (%s) is to small to pick %s individuals", individuals.size(), count));
+        }
+
+        Random random = new Random();
+
+        for (int i = size - 1; i >= size - count; --i) {
+            Collections.swap(individuals, i, random.nextInt(i + 1));
+        }
+
+        return individuals.subList(size - count, size);
     }
 
     @Override
