@@ -21,11 +21,11 @@ class TournamentTest {
     @DisplayName("Should select best individual from the whole provided sample list")
     void shouldSelectBestIndividualFromTheWholeList() {
         // given
-        Tournament tournament = new Tournament();
         ArrayList<Individual> individuals = getIndividuals();
         int size = individuals.size();
+        Tournament tournament = new Tournament(size);
         // when
-        Individual individual = tournament.select(individuals, size);
+        Individual individual = tournament.select(individuals);
         // then
         assertThat(individual.getFitness()).isEqualTo(100);
     }
@@ -33,12 +33,8 @@ class TournamentTest {
     @Test
     @DisplayName("Should throw an IllegalArgumentException when amount of tournament competitors is not provided")
     void shouldThrowAnIllegalArgumentException_whenCountIsNotProvided() {
-        // given
-        Tournament tournament = new Tournament();
-        ArrayList<Individual> individuals = getIndividuals();
-        // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tournament.select(individuals))
+                .isThrownBy(Tournament::new)
                 .withMessage("Size of a sublist of individuals for tournament has to be provided");
     }
 
@@ -46,12 +42,12 @@ class TournamentTest {
     @DisplayName("Should throw an IllegalArgumentException when amount of tournament competitors is too big")
     void shouldThrowAnIllegalArgumentException_whenCountIsBiggerThanInitialListSize() {
         // given
-        Tournament tournament = new Tournament();
-        ArrayList<Individual> individuals = getIndividuals();
         int size = 10;
+        Tournament tournament = new Tournament(size);
+        ArrayList<Individual> individuals = getIndividuals();
         // then
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> tournament.select(individuals, size))
+                .isThrownBy(() -> tournament.select(individuals))
                 .withMessage(String.format("The size of the population (%s) is to small to pick %s individuals", individuals.size(), size));
     }
 

@@ -84,7 +84,7 @@ public class GeneticAlgorithm {
         return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover);
     }
 
-    public void run() {
+    public Individual run() {
         // 1. initialize random population
         Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces());
         LOGGER.log(Level.INFO, population.toString());
@@ -97,6 +97,6 @@ public class GeneticAlgorithm {
             currentGeneration++;
         }
 
-        // @TODO write result to a file by TSP class
+        return population.getBestIndividual();
     }
 }

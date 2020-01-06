@@ -16,8 +16,8 @@ public class Population {
     private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
 
     private ArrayList<Individual> individuals;
-    private int bestFitness;
-    private int worstFitness;
+    private Individual bestIndividual;
+    private Individual worstIndividual;
     private int avgFitness;
 
     public Population() {
@@ -95,8 +95,8 @@ public class Population {
         }
 
         try {
-            this.bestFitness = bestIndividual.getFitness();
-            this.worstFitness = worstIndividual.getFitness();
+            this.bestIndividual = bestIndividual;
+            this.worstIndividual = worstIndividual;
             this.avgFitness = sum / individuals.size();
         } catch (NullPointerException e) {
             LOGGER.log(Level.FINE, e.toString());
@@ -114,14 +114,14 @@ public class Population {
      * @return the best individual's fitness in the whole population
      */
     public int getBestFitness() {
-        return bestFitness;
+        return bestIndividual.getFitness();
     }
 
     /**
      * @return the worst individual's fitness in the whole population
      */
     public int getWorstFitness() {
-        return worstFitness;
+        return worstIndividual.getFitness();
     }
 
     /**
@@ -129,6 +129,20 @@ public class Population {
      */
     public int getAvgFitness() {
         return avgFitness;
+    }
+
+    /**
+     * @return the best individual in the population
+     */
+    public Individual getBestIndividual() {
+        return bestIndividual;
+    }
+
+    /**
+     * @return the worst individual in the population
+     */
+    public Individual getWorstIndividual() {
+        return worstIndividual;
     }
 
     /**
@@ -157,8 +171,8 @@ public class Population {
     @Override
     public String toString() {
         return "Population{" +
-                "bestFitness=" + bestFitness +
-                ", worstFitness=" + worstFitness +
+                "bestFitness=" + bestIndividual.getFitness() +
+                ", worstFitness=" + worstIndividual.getFitness() +
                 ", avgFitness=" + avgFitness +
                 '}';
     }
