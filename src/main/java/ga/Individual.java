@@ -54,22 +54,6 @@ public class Individual implements Comparable<Individual> {
     /**
      * Constructor for Individual with initial random genome based on provided places
      *
-     * @param minGen      minimum gen value (first possible key)
-     * @param maxGen      maximum gen value (last possible key)
-     * @param startingGen starting gen
-     * @param places      all available places
-     * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
-     */
-    public Individual(int minGen, int maxGen, int startingGen, TreeMap<Integer, Place> places) throws IllegalArgumentException {
-        this(minGen, maxGen, startingGen);
-
-        this.genome = this.randomGenome(minGen, maxGen, startingGen);
-        this.fitness = this.calculateFitness(places);
-    }
-
-    /**
-     * Constructor for Individual with initial random genome based on provided places
-     *
      * @param startingGen starting gen
      * @param places      all available places
      * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
@@ -80,7 +64,6 @@ public class Individual implements Comparable<Individual> {
         this.genome = this.randomGenome(minGen, maxGen, startingGen);
         this.fitness = this.calculateFitness(places);
     }
-
 
     /**
      * Constructor for Individual with initial random genome
@@ -105,11 +88,51 @@ public class Individual implements Comparable<Individual> {
         this.genome = this.randomGenome(minGen, maxGen, startingGen);
     }
 
+
+    /**
+     * Constructor for Individual with initial random genome based on provided places
+     *
+     * @param startingGen starting gen
+     * @param places      all available places
+     * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
+     */
+    public Individual(int startingGen, TreeMap<Integer, Place> places, InitialGenomeAlgorithm initialGenomeAlgorithm) throws IllegalArgumentException {
+        this(places.firstKey(), places.lastKey(), startingGen, initialGenomeAlgorithm);
+
+        this.genome = this.initializeGenome(minGen, maxGen, startingGen, initialGenomeAlgorithm);
+        this.fitness = this.calculateFitness(places);
+    }
+
+    /**
+     * Constructor for Individual with initial random genome
+     *
+     * @param minGen      minimum gen value (first possible key)
+     * @param maxGen      maximum gen value (last possible key)
+     * @param startingGen starting gen
+     * @throws IllegalArgumentException illegal argument passed as minGen, maxGen or startingGen
+     */
+    public Individual(int minGen, int maxGen, int startingGen, InitialGenomeAlgorithm initialGenomeAlgorithm) throws IllegalArgumentException {
+        if (maxGen < minGen) {
+            throw new IllegalArgumentException("Maximum gen value cannot be lower than minimum gen value");
+        }
+
+        if (startingGen < minGen || startingGen > maxGen) {
+            throw new IllegalArgumentException("Starting gen has to be in a range <minimum gen value, maximum gen value>");
+        }
+
+        this.minGen = minGen;
+        this.maxGen = maxGen;
+        this.startingGen = startingGen;
+        this.genome = this.initializeGenome(minGen, maxGen, startingGen, initialGenomeAlgorithm);
+    }
+
+
     /**
      * @param minGen      minimum gen value (first possible key)
      * @param maxGen      maximum gen value (last possible key)
      * @param startingGen starting gen
      * @return random genome
+     * @deprecated use initializeGenome instead
      */
     public ArrayList<Integer> randomGenome(int minGen, int maxGen, int startingGen) {
         ArrayList<Integer> genome = new ArrayList<>();
@@ -118,6 +141,18 @@ public class Individual implements Comparable<Individual> {
         Collections.swap(genome, 0, genome.indexOf(startingGen));
 
         return genome;
+    }
+
+    /**
+     * @param minGen                 minimum gen value (first possible key)
+     * @param maxGen                 maximum gen value (last possible key)
+     * @param startingGen            starting gen
+     * @param initialGenomeAlgorithm InitialGenomeAlgorithm implementation
+     * @param params                 additional params
+     * @return genome
+     */
+    public ArrayList<Integer> initializeGenome(int minGen, int maxGen, int startingGen, InitialGenomeAlgorithm initialGenomeAlgorithm, int... params) {
+        return initialGenomeAlgorithm.initialize(minGen, maxGen, startingGen);
     }
 
     /**

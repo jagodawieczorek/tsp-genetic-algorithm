@@ -85,8 +85,10 @@ public class GeneticAlgorithm {
     }
 
     public Individual run() {
-        // 1. initialize random population
-        Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces());
+        // 1. initialize first population
+        // @TODO refactor this to pass as an argument to GA constructor
+        InitialGenomeAlgorithm initialGenomeAlgorithm = new RandomAlgorithm();
+        Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces(), initialGenomeAlgorithm);
         LOGGER.log(Level.INFO, population.toString());
         // 2. create generations based on previous one in a loop
         int currentGeneration = 0;

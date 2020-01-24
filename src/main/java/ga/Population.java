@@ -46,12 +46,6 @@ public class Population {
             individuals.add(individual);
         }
 
-//        populationSize = population.getIndividuals().size();
-//
-//        while (individuals.size() < populationSize) {
-//            individuals.add(new Individual(population.getBestIndividual().getStartingGen(), places));
-//        }
-
         evaluate();
     }
 
@@ -71,15 +65,46 @@ public class Population {
     }
 
     /**
+     *
+     * @param size population size
+     * @param startingPlace starting place
+     * @param places map of places
+     * @param initialGenomeAlgorithm InitialGenomeAlgorithm implementation
+     * @throws IllegalArgumentException exception
+     */
+    public Population(int size, int startingPlace, TreeMap<Integer, Place> places, InitialGenomeAlgorithm initialGenomeAlgorithm) throws IllegalArgumentException {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Population size cannot be less or equal 0");
+        }
+
+        individuals = new ArrayList<>();
+        initialize(size, startingPlace, places, initialGenomeAlgorithm);
+        evaluate();
+    }
+
+    /**
      * Initialize random population
      *
      * @param size          size of population
      * @param startingPlace key of starting place
      * @param places        places on the map
+     * @deprecated use initialize method instead
      */
     private void initializeRandom(int size, int startingPlace, TreeMap<Integer, Place> places) {
         for (int i = 0; i < size; i++) {
             individuals.add(new Individual(startingPlace, places));
+        }
+    }
+
+    /**
+     * @param size                   size of population
+     * @param startingPlace          key of starting place
+     * @param places                 places on the map
+     * @param initialGenomeAlgorithm InitialGenomeAlgorithm implementation
+     */
+    private void initialize(int size, int startingPlace, TreeMap<Integer, Place> places, InitialGenomeAlgorithm initialGenomeAlgorithm) {
+        for (int i = 0; i < size; i++) {
+            individuals.add(new Individual(startingPlace, places, initialGenomeAlgorithm));
         }
     }
 
