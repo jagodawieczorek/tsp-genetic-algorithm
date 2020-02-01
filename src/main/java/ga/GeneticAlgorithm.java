@@ -1,9 +1,6 @@
 package ga;
 
 import tsp.TSP;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +18,7 @@ public class GeneticAlgorithm {
     private TSP tsp;
     private Selector selector;
     private Crossover crossover;
+    private InitialGenomeAlgorithm initialGenomeAlgorithm;
 
     /**
      * GA constructor for TSP
@@ -32,9 +30,28 @@ public class GeneticAlgorithm {
      * @param tsp                  Travelling salesman problem
      * @param selector             Selector (e.g. Tournament / Roulette / .. )
      * @param crossover            Crossover type (e.g. PMX)
+     * @deprecated Pass as the last constructor argument InitialGenomeAlgorithm
      */
     public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover) {
         this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp);
+        this.selector = selector;
+        this.crossover = crossover;
+    }
+
+    /**
+     * GA constructor for TSP
+     *
+     * @param populationSize         Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations    Number of generations
+     * @param mutationProbability    Probability that mutation occurs
+     * @param crossoverProbability   Probability that crossover occurs
+     * @param tsp                    Travelling salesman problem
+     * @param selector               Selector (e.g. Tournament / Roulette / .. )
+     * @param crossover              Crossover type (e.g. PMX)
+     * @param initialGenomeAlgorithm Initial Genome Algorithm (e.g. Random, GRASP, ...)
+     */
+    public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover, InitialGenomeAlgorithm initialGenomeAlgorithm) {
+        this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, initialGenomeAlgorithm);
         this.selector = selector;
         this.crossover = crossover;
     }
@@ -47,10 +64,40 @@ public class GeneticAlgorithm {
      * @param mutationProbability  Probability that mutation occurs
      * @param crossoverProbability Probability that crossover occurs
      * @param tsp                  Travelling salesman problem
+     * @deprecated Pass as the last constructor argument InitialGenomeAlgorithm
      */
     public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp) {
         this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability);
         this.tsp = tsp;
+    }
+
+    /**
+     * GA constructor for TSP
+     *
+     * @param populationSize         Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations    Number of generations
+     * @param mutationProbability    Probability that mutation occurs
+     * @param crossoverProbability   Probability that crossover occurs
+     * @param tsp                    Travelling salesman problem
+     * @param initialGenomeAlgorithm Initial Genome Algorithm (e.g. Random, GRASP, ...)
+     */
+    public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, InitialGenomeAlgorithm initialGenomeAlgorithm) {
+        this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, initialGenomeAlgorithm);
+        this.tsp = tsp;
+    }
+
+    /**
+     * GA constructor
+     *
+     * @param populationSize         Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations    Number of generations
+     * @param mutationProbability    Probability that mutation occurs
+     * @param crossoverProbability   Probability that crossover occurs
+     * @param initialGenomeAlgorithm Initial Genome Algorithm (e.g. Random, GRASP, ...)
+     */
+    public GeneticAlgorithm(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, InitialGenomeAlgorithm initialGenomeAlgorithm) {
+        this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability);
+        this.initialGenomeAlgorithm = initialGenomeAlgorithm;
     }
 
     /**
@@ -78,16 +125,44 @@ public class GeneticAlgorithm {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationProbability = mutationProbability;
         this.crossoverProbability = crossoverProbability;
+        // @TODO refactor this
+        this.initialGenomeAlgorithm = new RandomAlgorithm();
     }
 
+    /**
+     *
+     * @param populationSize Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations Number of generations
+     * @param mutationProbability Probability that mutation occurs
+     * @param crossoverProbability Probability that crossover occurs
+     * @param tsp Travelling salesman problem
+     * @param selector e.g. Tournament selector
+     * @param crossover Crossover
+     * @return Genetic algorithm
+     * @deprecated Pass to the constructor InitialGenomeAlgorithm as the last argument
+     */
     public static GeneticAlgorithm create(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover) {
         return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover);
     }
 
+    /**
+     *
+     * @param populationSize Size of the population (number of Individuals in one generation)
+     * @param numberOfGenerations Number of generations
+     * @param mutationProbability Probability that mutation occurs
+     * @param crossoverProbability Probability that crossover occurs
+     * @param tsp Travelling salesman problem
+     * @param selector e.g. Tournament selector
+     * @param crossover Crossover
+     * @param initialGenomeAlgorithm Initial genome algorithm
+     * @return Genetic algorithm
+     */
+    public static GeneticAlgorithm create(int populationSize, int numberOfGenerations, float mutationProbability, float crossoverProbability, TSP tsp, Selector selector, Crossover crossover, InitialGenomeAlgorithm initialGenomeAlgorithm) {
+        return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover, initialGenomeAlgorithm);
+    }
+
     public Individual run() {
         // 1. initialize first population
-        // @TODO refactor this to pass as an argument to GA constructor
-        InitialGenomeAlgorithm initialGenomeAlgorithm = new RandomAlgorithm();
         Population population = new Population(populationSize, tsp.getStartingPlace(), tsp.getPlaces(), initialGenomeAlgorithm);
         LOGGER.log(Level.INFO, population.toString());
         // 2. create generations based on previous one in a loop
@@ -95,7 +170,7 @@ public class GeneticAlgorithm {
 
         while (currentGeneration < numberOfGenerations) {
             population = new Population(population, tsp.getPlaces(), mutationProbability, crossoverProbability, selector, crossover);
-            LOGGER.log(Level.INFO, population.toString());
+            LOGGER.log(Level.INFO, population.toString() + " generation number: " + currentGeneration);
             currentGeneration++;
         }
 

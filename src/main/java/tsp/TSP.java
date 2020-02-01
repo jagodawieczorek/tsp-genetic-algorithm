@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static tsp.TSP.DisplayDataType.*;
 import static tsp.TSP.EdgeWeightType.*;
@@ -104,6 +105,10 @@ public class TSP {
                         startPlace.getValue().setDistanceTo(endPlace.getValue());
                     }
                 }
+
+                Map<Integer, Integer> origDistances = startPlace.getValue().getDistances();
+                startPlace.getValue().setDistances(origDistances.entrySet().stream().sorted(Map.Entry.comparingByValue())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
             } catch (IllegalArgumentException e) {
                 LOGGER.log(Level.WARNING, e.toString());
             }

@@ -1,5 +1,8 @@
 package tsp;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -16,7 +19,7 @@ public class Place {
     private Float longitude;
     private Double radiansLatitude;
     private Double radiansLongitude;
-    private TreeMap<Integer, Integer> distances;
+    private Map<Integer, Integer> distances;
 
     /**
      * @param id        ID from source file
@@ -120,7 +123,14 @@ public class Place {
         return radiansLongitude;
     }
 
-    public TreeMap<Integer, Integer> getDistances() {
+    public Map<Integer, Integer> getDistances() {
         return distances;
+    }
+
+    /**
+     * @param distances Distances
+     */
+    public void setDistances(Map<Integer, Integer> distances) {
+        this.distances = distances;
     }
 }
