@@ -6,7 +6,7 @@
 
     <groupId>pl.jagodawieczorek</groupId>
     <artifactId>tsp-genetic-algorithm</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -35,6 +35,11 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>3.2.4</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.jagodawieczorek</groupId>
+            <artifactId>tsp</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>
