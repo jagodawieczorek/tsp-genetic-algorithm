@@ -12,28 +12,28 @@ import java.util.Random;
  */
 public class PartiallyMappedCrossover implements Crossover {
 
-    @Override
-    public Individual perform(Individual parent1, Individual parent2) {
-        Random random = new Random();
-        int breakpoint = random.nextInt(parent1.getGenome().size() - 1);
+	@Override
+	public Individual perform(final Individual parent1, final Individual parent2) {
+		final Random random = new Random();
+		final int breakpoint = random.nextInt(parent1.getGenome().size() - 1);
 
-        return perform(parent1, parent2, breakpoint);
-    }
+		return perform(parent1, parent2, breakpoint);
+	}
 
-    @Override
-    public Individual perform(Individual parent1, Individual parent2, int breakpoint) {
-        List<Integer> genome1 = new ArrayList<>(parent1.getGenome());
-        List<Integer> genome2 = new ArrayList<>(parent2.getGenome());
+	@Override
+	public Individual perform(final Individual parent1, final Individual parent2, final int breakpoint) {
+		final List<Integer> genome1 = new ArrayList<>(parent1.getGenome());
+		final List<Integer> genome2 = new ArrayList<>(parent2.getGenome());
 
-        if (breakpoint > (genome1.size() - 1)) {
-            throw new IllegalArgumentException(String.format("Crossover breakpoint cannot be bigger than %s", genome1.size() - 1));
-        }
+		if (breakpoint > (genome1.size() - 1)) {
+			throw new IllegalArgumentException(String.format("Crossover breakpoint cannot be bigger than %s", genome1.size() - 1));
+		}
 
-        for (int i = 0; i < breakpoint; i++) {
-            int valueToSwap = genome2.get(i);
-            Collections.swap(genome1, genome1.indexOf(valueToSwap), i);
-        }
+		for (int i = 0; i < breakpoint; i++) {
+			final int valueToSwap = genome2.get(i);
+			Collections.swap(genome1, genome1.indexOf(valueToSwap), i);
+		}
 
-        return new Individual(new ArrayList<>(genome1));
-    }
+		return new Individual(new ArrayList<>(genome1));
+	}
 }

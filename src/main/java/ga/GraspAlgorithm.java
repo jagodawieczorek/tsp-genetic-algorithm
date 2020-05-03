@@ -1,57 +1,60 @@
 package ga;
 
-import tsp.Place;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
 
+import tsp.Place;
+
 /**
- * GRASP algorithm (Greedy randomized adaptive search procedure)
- * Semi greedy heuristic
+ * GRASP algorithm (Greedy randomized adaptive search procedure) Semi greedy
+ * heuristic
  *
  * @author Jagoda Wieczorek
  */
 public class GraspAlgorithm implements InitialGenomeAlgorithm {
-    private int rclSize;
-    private Random random;
+	private final int rclSize;
 
-    /**
-     * @param rclSize Restricted candidate list (RCL) size
-     */
-    public GraspAlgorithm(int rclSize) {
-        this.rclSize = rclSize;
-        this.random = new Random();
-    }
+	private final Random random;
 
-    @Override
-    public ArrayList<Integer> initialize(int minGen, int maxGen, int current, TreeMap<Integer, Place> places) {
-        ArrayList<Integer> genome = new ArrayList<>();
-        genome.add(current);
+	/**
+	 * @param rclSize
+	 *                    Restricted candidate list (RCL) size
+	 */
+	public GraspAlgorithm(final int rclSize) {
+		this.rclSize = rclSize;
+		this.random = new Random();
+	}
 
-        while (genome.size() <= places.get(current).getDistances().size()) {
-            current = getNextForCurrentPlace(current, places, genome);
-            genome.add(current);
-        }
+	@Override
+	public ArrayList<Integer> initialize(final int minGen, final int maxGen, int current, final TreeMap<Integer, Place> places) {
+		final ArrayList<Integer> genome = new ArrayList<>();
+		genome.add(current);
 
-        return genome;
-    }
+		while (genome.size() <= places.get(current).getDistances().size()) {
+			current = getNextForCurrentPlace(current, places, genome);
+			genome.add(current);
+		}
 
-    private int getNextForCurrentPlace(int current, TreeMap<Integer, Place> places, ArrayList<Integer> genome) {
-        var distances = places.get(current).getDistances();
-        ArrayList<Integer> rclList = new ArrayList<>();
-        int count = 0;
+		return genome;
+	}
 
-        var iterator = distances.entrySet().iterator();
-        // @TODO consider the performance when taken elements from the distances map are removed
-        while (iterator.hasNext() && count < rclSize) {
-            int key = iterator.next().getKey();
-            if (!genome.contains(key)) {
-                rclList.add(key);
-                count++;
-            }
-        }
+	private int getNextForCurrentPlace(final int current, final TreeMap<Integer, Place> places, final ArrayList<Integer> genome) {
+		final var distances = places.get(current).getDistances();
+		final ArrayList<Integer> rclList = new ArrayList<>();
+		int count = 0;
 
-        return rclList.get(random.nextInt(rclList.size()));
-    }
+		final var iterator = distances.entrySet().iterator();
+		// @TODO consider the performance when taken elements from the distances map are
+		// removed
+		while (iterator.hasNext() && count < this.rclSize) {
+			final int key = iterator.next().getKey();
+			if (!genome.contains(key)) {
+				rclList.add(key);
+				count++;
+			}
+		}
+
+		return rclList.get(this.random.nextInt(rclList.size()));
+	}
 }

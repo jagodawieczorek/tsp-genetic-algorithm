@@ -1,6 +1,5 @@
 package ga;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,23 +8,26 @@ import java.util.List;
  * @author Jagoda Wieczorek
  */
 interface Selector {
-    /**
-     * @param individuals List of individuals
-     * @param params      List of params
-     * @return winner individual
-     */
-    Individual select(List<Individual> individuals, int... params);
+	/**
+	 * @param individuals
+	 *                        List of individuals
+	 * @param params
+	 *                        List of params
+	 * @return winner individual
+	 */
+	Individual select(List<Individual> individuals, int... params);
 
-    /**
-     * @param individuals List of individuals
-     * @return winner individual
-     */
-    Individual select(List<Individual> individuals);
+	/**
+	 * @param individuals
+	 *                        List of individuals
+	 * @return winner individual
+	 */
+	Individual select(List<Individual> individuals);
 
-    /**
-     * Get all params
-     *
-     * @return params
-     */
-    int[] getParams();
+	/**
+	 * Get all params
+	 *
+	 * @return params
+	 */
+	int[] getParams();
 }

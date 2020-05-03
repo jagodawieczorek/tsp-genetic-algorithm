@@ -1,15 +1,14 @@
 package tsp;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for Travelling Salesman Problem class
@@ -17,85 +16,86 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Jagoda Wieczorek
  */
 class TSPTest {
-    private static final String FILE_WITH_GROUP_OF_4_COORDINATES = "resources/tsp/test/gr4.tsp";
-    private static final String FILE_WITH_GROUP_OF_137_COORDINATES = "resources/tsp/gr137.tsp";
+	private static final String FILE_WITH_GROUP_OF_4_COORDINATES = "resources/tsp/test/gr4.tsp";
 
-    @Test
-    @DisplayName("Should create places map from test source file with 4 places")
-    void shouldSetFromFile_4places() {
-        // given
-        TSP tsp = new TSP();
+	private static final String FILE_WITH_GROUP_OF_137_COORDINATES = "resources/tsp/gr137.tsp";
 
-        // when
-        tsp.setFromFile(FILE_WITH_GROUP_OF_4_COORDINATES);
+	@Test
+	@DisplayName("Should create places map from test source file with 4 places")
+	void shouldSetFromFile_4places() {
+		// given
+		final TSP tsp = new TSP();
 
-        // then
-        assertEquals("gr4", tsp.getName());
-        TreeMap<Integer, Place> places = tsp.getPlaces();
-        assertEquals(4, places.size());
+		// when
+		tsp.setFromFile(FILE_WITH_GROUP_OF_4_COORDINATES);
 
-        assertEquals(71.17f, places.get(1).getLatitude());
-        assertEquals(-156.47f, places.get(1).getLongitude());
+		// then
+		assertEquals("gr4", tsp.getName());
+		final TreeMap<Integer, Place> places = tsp.getPlaces();
+		assertEquals(4, places.size());
 
-        assertEquals(1.2441285563664188, places.get(1).getRadiansLatitude());
-        assertEquals(-2.7363848451384367, places.get(1).getRadiansLongitude());
+		assertEquals(71.17f, places.get(1).getLatitude());
+		assertEquals(-156.47f, places.get(1).getLongitude());
 
-        assertEquals(64.51f, places.get(2).getLatitude());
-        assertEquals(-147.43f, places.get(2).getLongitude());
+		assertEquals(1.2441285563664188, places.get(1).getRadiansLatitude());
+		assertEquals(-2.7363848451384367, places.get(1).getRadiansLongitude());
 
-        assertEquals(1.1202103206589311, places.get(2).getRadiansLatitude());
-        assertEquals(-2.5781414439841943, places.get(2).getRadiansLongitude());
+		assertEquals(64.51f, places.get(2).getLatitude());
+		assertEquals(-147.43f, places.get(2).getLongitude());
 
-        Set<Map.Entry<Integer, Place>> listOfPlaces = places.entrySet();
+		assertEquals(1.1202103206589311, places.get(2).getRadiansLatitude());
+		assertEquals(-2.5781414439841943, places.get(2).getRadiansLongitude());
 
-        for (Map.Entry<Integer, Place> place : listOfPlaces) {
-            assertEquals(place.getKey(), place.getValue().getId());
-        }
-    }
+		final Set<Map.Entry<Integer, Place>> listOfPlaces = places.entrySet();
 
-    @Test
-    @DisplayName("Should calculate and assign distances for 4 places")
-    void shouldCalculateAndAssignDistances_4places() {
-        // given
-        TSP tsp = new TSP(FILE_WITH_GROUP_OF_4_COORDINATES);
-        // when
-        tsp.calculateAndAssignDistances();
-        // then
-        TreeMap<Integer, Place> places = tsp.getPlaces();
-        assertThat(places.get(1).getDistances()).containsOnlyKeys(2, 3, 4);
-        assertThat(places.get(1).getDistances().get(2)).isNotNull();
-        assertThat(places.get(1).getDistances().get(3)).isNotNull();
-        assertThat(places.get(1).getDistances().get(4)).isNotNull();
+		for (final Map.Entry<Integer, Place> place: listOfPlaces) {
+			assertEquals(place.getKey(), place.getValue().getId());
+		}
+	}
 
-        assertThat(places.get(2).getDistances()).containsOnlyKeys(1, 3, 4);
-        assertThat(places.get(2).getDistances().get(1)).isNotNull();
-        assertThat(places.get(2).getDistances().get(3)).isNotNull();
-        assertThat(places.get(2).getDistances().get(4)).isNotNull();
+	@Test
+	@DisplayName("Should calculate and assign distances for 4 places")
+	void shouldCalculateAndAssignDistances_4places() {
+		// given
+		final TSP tsp = new TSP(FILE_WITH_GROUP_OF_4_COORDINATES);
+		// when
+		tsp.calculateAndAssignDistances();
+		// then
+		final TreeMap<Integer, Place> places = tsp.getPlaces();
+		assertThat(places.get(1).getDistances()).containsOnlyKeys(2, 3, 4);
+		assertThat(places.get(1).getDistances().get(2)).isNotNull();
+		assertThat(places.get(1).getDistances().get(3)).isNotNull();
+		assertThat(places.get(1).getDistances().get(4)).isNotNull();
 
-        assertThat(places.get(1).getDistances().get(3)).isEqualTo(places.get(3).getDistances().get(1));
-    }
+		assertThat(places.get(2).getDistances()).containsOnlyKeys(1, 3, 4);
+		assertThat(places.get(2).getDistances().get(1)).isNotNull();
+		assertThat(places.get(2).getDistances().get(3)).isNotNull();
+		assertThat(places.get(2).getDistances().get(4)).isNotNull();
 
-    @Test
-    @DisplayName("Should calculate and assign distances for 137 places")
-    void shouldCalculateAndAssignDistances_137places() {
-        // given
-        TSP tsp = new TSP(FILE_WITH_GROUP_OF_137_COORDINATES);
-        // when
-        tsp.calculateAndAssignDistances();
-        // then
-        TreeMap<Integer, Place> places = tsp.getPlaces();
-        assertThat(places.get(1).getDistances().size()).isEqualTo(136);
-    }
+		assertThat(places.get(1).getDistances().get(3)).isEqualTo(places.get(3).getDistances().get(1));
+	}
 
-    @Test
-    @DisplayName("Should assign starting place which is first place on the list")
-    void shouldSetStartingPlace() {
-        // given
-        TSP tsp = new TSP();
-        tsp.setFromFile(FILE_WITH_GROUP_OF_4_COORDINATES);
-        // when
-        tsp.setStartingPlace();
-        // then
-        assertThat(tsp.getStartingPlace()).isEqualTo(1);
-    }
+	@Test
+	@DisplayName("Should calculate and assign distances for 137 places")
+	void shouldCalculateAndAssignDistances_137places() {
+		// given
+		final TSP tsp = new TSP(FILE_WITH_GROUP_OF_137_COORDINATES);
+		// when
+		tsp.calculateAndAssignDistances();
+		// then
+		final TreeMap<Integer, Place> places = tsp.getPlaces();
+		assertThat(places.get(1).getDistances().size()).isEqualTo(136);
+	}
+
+	@Test
+	@DisplayName("Should assign starting place which is first place on the list")
+	void shouldSetStartingPlace() {
+		// given
+		final TSP tsp = new TSP();
+		tsp.setFromFile(FILE_WITH_GROUP_OF_4_COORDINATES);
+		// when
+		tsp.setStartingPlace();
+		// then
+		assertThat(tsp.getStartingPlace()).isEqualTo(1);
+	}
 }

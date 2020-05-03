@@ -1,11 +1,11 @@
 package ga;
 
-import tsp.Place;
-import tsp.TSP;
-
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import tsp.Place;
+import tsp.TSP;
 
 /**
  * Population class
@@ -13,211 +13,229 @@ import java.util.logging.Logger;
  * @author Jagoda Wieczorek
  */
 public class Population {
-    private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(TSP.class.getName());
 
-    private ArrayList<Individual> individuals;
-    private List<Individual> bestIndividuals;
-    private Individual bestIndividual;
-    private Individual worstIndividual;
-    private int avgFitness;
+	private ArrayList<Individual> individuals;
 
-    public Population() {
-    }
+	private List<Individual> bestIndividuals;
 
-    public Population(Population population, TreeMap<Integer, Place> places, float mutationProbability, float crossoverProbability, Selector selector, Crossover crossover) {
-        individuals = new ArrayList<>();
-        Random random = new Random();
-        int populationSize = population.getIndividuals().size();
+	private Individual bestIndividual;
 
-        while (individuals.size() < populationSize) {
-            Individual individual = selector.select(population.getBestIndividuals());
+	private Individual worstIndividual;
 
-            if (crossoverProbability > random.nextFloat()) {
-                Individual parent2 = selector.select(population.getBestIndividuals());
-                individual = crossover.perform(individual, parent2);
-            }
+	private int avgFitness;
 
-            if (mutationProbability > random.nextFloat()) {
-                individual.mutate();
-            }
+	public Population() {
+	}
 
-            individual.setFitness(places);
+	public Population(final Population population, final TreeMap<Integer, Place> places, final float mutationProbability, final float crossoverProbability, final Selector selector,
+                      final Crossover crossover) {
+        this.individuals = new ArrayList<>();
+		final Random random = new Random();
+		final int populationSize = population.getIndividuals().size();
 
-            individuals.add(individual);
-        }
+		while (this.individuals.size() < populationSize) {
+			Individual individual = selector.select(population.getBestIndividuals());
 
-        evaluate();
-    }
+			if (crossoverProbability > random.nextFloat()) {
+				final Individual parent2 = selector.select(population.getBestIndividuals());
+				individual = crossover.perform(individual, parent2);
+			}
 
-    /**
-     * Constructor for random population with predefined size
-     *
-     * @param size Population size
-     */
-    public Population(int size, int startingPlace, TreeMap<Integer, Place> places) throws IllegalArgumentException {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Population size cannot be less or equal 0");
-        }
+			if (mutationProbability > random.nextFloat()) {
+				individual.mutate();
+			}
 
-        individuals = new ArrayList<>();
-        initializeRandom(size, startingPlace, places);
-        evaluate();
-    }
+			individual.setFitness(places);
 
-    /**
-     *
-     * @param size population size
-     * @param startingPlace starting place
-     * @param places map of places
-     * @param initialGenomeAlgorithm InitialGenomeAlgorithm implementation
-     * @throws IllegalArgumentException exception
-     */
-    public Population(int size, int startingPlace, TreeMap<Integer, Place> places, InitialGenomeAlgorithm initialGenomeAlgorithm) throws IllegalArgumentException {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Population size cannot be less or equal 0");
-        }
+            this.individuals.add(individual);
+		}
 
-        individuals = new ArrayList<>();
-        initialize(size, startingPlace, places, initialGenomeAlgorithm);
-        evaluate();
-    }
+		evaluate();
+	}
 
-    /**
-     * Initialize random population
-     *
-     * @param size          size of population
-     * @param startingPlace key of starting place
-     * @param places        places on the map
-     * @deprecated use initialize method instead
-     */
-    private void initializeRandom(int size, int startingPlace, TreeMap<Integer, Place> places) {
-        for (int i = 0; i < size; i++) {
-            individuals.add(new Individual(startingPlace, places));
-        }
-    }
+	/**
+	 * Constructor for random population with predefined size
+	 *
+	 * @param size
+	 *                 Population size
+	 */
+	public Population(final int size, final int startingPlace, final TreeMap<Integer, Place> places) throws IllegalArgumentException {
+		if (size <= 0) {
+			throw new IllegalArgumentException("Population size cannot be less or equal 0");
+		}
 
-    /**
-     * @param size                   size of population
-     * @param startingPlace          key of starting place
-     * @param places                 places on the map
-     * @param initialGenomeAlgorithm InitialGenomeAlgorithm implementation
-     */
-    private void initialize(int size, int startingPlace, TreeMap<Integer, Place> places, InitialGenomeAlgorithm initialGenomeAlgorithm) {
-        for (int i = 0; i < size; i++) {
-            individuals.add(new Individual(startingPlace, places, initialGenomeAlgorithm));
-        }
-    }
+        this.individuals = new ArrayList<>();
+		initializeRandom(size, startingPlace, places);
+		evaluate();
+	}
 
-    private void evaluate() {
-        int sum = 0;
-        Individual bestIndividual = null;
-        Individual worstIndividual = null;
+	/**
+	 *
+	 * @param size
+	 *                                   population size
+	 * @param startingPlace
+	 *                                   starting place
+	 * @param places
+	 *                                   map of places
+	 * @param initialGenomeAlgorithm
+	 *                                   InitialGenomeAlgorithm implementation
+	 * @throws IllegalArgumentException
+	 *                                      exception
+	 */
+	public Population(final int size, final int startingPlace, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm)
+			throws IllegalArgumentException {
+		if (size <= 0) {
+			throw new IllegalArgumentException("Population size cannot be less or equal 0");
+		}
 
-        for (Individual individual : individuals) {
-            if (bestIndividual == null || individual.compareTo(bestIndividual) > 0) {
-                bestIndividual = individual;
-            }
+        this.individuals = new ArrayList<>();
+		initialize(size, startingPlace, places, initialGenomeAlgorithm);
+		evaluate();
+	}
 
-            if (worstIndividual == null || individual.compareTo(worstIndividual) < 0) {
-                worstIndividual = individual;
-            }
+	/**
+	 * Initialize random population
+	 *
+	 * @param size
+	 *                          size of population
+	 * @param startingPlace
+	 *                          key of starting place
+	 * @param places
+	 *                          places on the map
+	 * @deprecated use initialize method instead
+	 */
+	private void initializeRandom(final int size, final int startingPlace, final TreeMap<Integer, Place> places) {
+		for (int i = 0; i < size; i++) {
+            this.individuals.add(new Individual(startingPlace, places));
+		}
+	}
 
-            sum += individual.getFitness();
-        }
+	/**
+	 * @param size
+	 *                                   size of population
+	 * @param startingPlace
+	 *                                   key of starting place
+	 * @param places
+	 *                                   places on the map
+	 * @param initialGenomeAlgorithm
+	 *                                   InitialGenomeAlgorithm implementation
+	 */
+	private void initialize(final int size, final int startingPlace, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+		for (int i = 0; i < size; i++) {
+            this.individuals.add(new Individual(startingPlace, places, initialGenomeAlgorithm));
+		}
+	}
 
-        try {
-            this.bestIndividual = bestIndividual;
-            this.worstIndividual = worstIndividual;
-            this.avgFitness = sum / individuals.size();
-            this.setBestIndividuals(0.1f);
-        } catch (NullPointerException e) {
-            LOGGER.log(Level.FINE, e.toString());
-        }
-    }
+	private void evaluate() {
+		int sum = 0;
+		Individual bestIndividual = null;
+		Individual worstIndividual = null;
 
-    /**
-     * @return individuals in population
-     */
-    public ArrayList<Individual> getIndividuals() {
-        return individuals;
-    }
+		for (final Individual individual: this.individuals) {
+			if (bestIndividual == null || individual.compareTo(bestIndividual) > 0) {
+				bestIndividual = individual;
+			}
 
-    public void setBestIndividuals(float part) {
-        ArrayList<Individual> sortedIndividuals = individuals;
-        Collections.sort(sortedIndividuals);
-        int lastIndividualIndex = (int) (part * sortedIndividuals.size());
+			if (worstIndividual == null || individual.compareTo(worstIndividual) < 0) {
+				worstIndividual = individual;
+			}
 
-        bestIndividuals = sortedIndividuals.subList(lastIndividualIndex, individuals.size());
-    }
+			sum += individual.getFitness();
+		}
 
-    /**
-     * @return the best individual's fitness in the whole population
-     */
-    public int getBestFitness() {
-        return bestIndividual.getFitness();
-    }
+		try {
+			this.bestIndividual = bestIndividual;
+			this.worstIndividual = worstIndividual;
+			this.avgFitness = sum / this.individuals.size();
+			this.setBestIndividuals(0.1f);
+		} catch (final NullPointerException e) {
+			LOGGER.log(Level.FINE, e.toString());
+		}
+	}
 
-    /**
-     * @return the worst individual's fitness in the whole population
-     */
-    public int getWorstFitness() {
-        return worstIndividual.getFitness();
-    }
+	/**
+	 * @return individuals in population
+	 */
+	public ArrayList<Individual> getIndividuals() {
+		return this.individuals;
+	}
 
-    /**
-     * @return average fitness of the population
-     */
-    public int getAvgFitness() {
-        return avgFitness;
-    }
+	public void setBestIndividuals(final float part) {
+		final ArrayList<Individual> sortedIndividuals = this.individuals;
+		Collections.sort(sortedIndividuals);
+		final int lastIndividualIndex = (int) (part * sortedIndividuals.size());
 
-    /**
-     * @return the best individual in the population
-     */
-    public Individual getBestIndividual() {
-        return bestIndividual;
-    }
+        this.bestIndividuals = sortedIndividuals.subList(lastIndividualIndex, this.individuals.size());
+	}
 
-    /**
-     * @return the worst individual in the population
-     */
-    public Individual getWorstIndividual() {
-        return worstIndividual;
-    }
+	/**
+	 * @return the best individual's fitness in the whole population
+	 */
+	public int getBestFitness() {
+		return this.bestIndividual.getFitness();
+	}
 
-    public List<Individual> getBestIndividuals() {
-        return bestIndividuals;
-    }
+	/**
+	 * @return the worst individual's fitness in the whole population
+	 */
+	public int getWorstFitness() {
+		return this.worstIndividual.getFitness();
+	}
 
-    /**
-     * Random sublist generator using Fisher-Yates-Durstenfeld shuffle algorithm
-     *
-     * @param individuals initial list with individuals
-     * @param count       size of a sublist on output
-     * @return sublist with random individuals
-     */
-    public static List<Individual> getRandomSublist(List<Individual> individuals, int count) {
-        int size = individuals.size();
+	/**
+	 * @return average fitness of the population
+	 */
+	public int getAvgFitness() {
+		return this.avgFitness;
+	}
 
-        if (size < count) {
-            throw new IllegalArgumentException(String.format("The size of the population (%s) is to small to pick %s individuals", individuals.size(), count));
-        }
+	/**
+	 * @return the best individual in the population
+	 */
+	public Individual getBestIndividual() {
+		return this.bestIndividual;
+	}
 
-        Random random = new Random();
+	/**
+	 * @return the worst individual in the population
+	 */
+	public Individual getWorstIndividual() {
+		return this.worstIndividual;
+	}
 
-        for (int i = size - 1; i >= size - count; --i) {
-            Collections.swap(individuals, i, random.nextInt(i + 1));
-        }
+	public List<Individual> getBestIndividuals() {
+		return this.bestIndividuals;
+	}
 
-        return individuals.subList(size - count, size);
-    }
+	/**
+	 * Random sublist generator using Fisher-Yates-Durstenfeld shuffle algorithm
+	 *
+	 * @param individuals
+	 *                        initial list with individuals
+	 * @param count
+	 *                        size of a sublist on output
+	 * @return sublist with random individuals
+	 */
+	public static List<Individual> getRandomSublist(final List<Individual> individuals, final int count) {
+		final int size = individuals.size();
 
-    @Override
-    public String toString() {
-        return "Population{" +
-                "bestFitness=" + bestIndividual.getFitness() +
-                ", worstFitness=" + worstIndividual.getFitness() +
-                ", avgFitness=" + avgFitness +
-                '}';
-    }
+		if (size < count) {
+			throw new IllegalArgumentException(String.format("The size of the population (%s) is to small to pick %s individuals", individuals.size(), count));
+		}
+
+		final Random random = new Random();
+
+		for (int i = size - 1; i >= size - count; --i) {
+			Collections.swap(individuals, i, random.nextInt(i + 1));
+		}
+
+		return individuals.subList(size - count, size);
+	}
+
+	@Override
+	public String toString() {
+		return "Population{" + "bestFitness=" + this.bestIndividual.getFitness() + ", worstFitness=" + this.worstIndividual.getFitness() + ", avgFitness=" + this.avgFitness
+				+ '}';
+	}
 }

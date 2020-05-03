@@ -9,21 +9,23 @@ import java.util.TreeMap;
  * @author Jagoda Wieczorek
  */
 public class Path {
-    private ArrayList<Integer> order;
-    private TreeMap<Integer, Place> places;
-    private ArrayList<Place> path;
+	private final ArrayList<Integer> order;
 
-    public Path(TreeMap<Integer, Place> places, ArrayList<Integer> order) {
-        this.places = places;
-        this.order = order;
-        this.path = new ArrayList<>();
+	private final TreeMap<Integer, Place> places;
 
-        for (Integer index : order) {
-            this.path.add(places.get(index));
-        }
-    }
+	private final ArrayList<Place> path;
 
-    public ArrayList<Place> getPath() {
-        return path;
-    }
+	public Path(final TreeMap<Integer, Place> places, final ArrayList<Integer> order) {
+		this.places = places;
+		this.order = order;
+		this.path = new ArrayList<>();
+
+		for (final Integer index: order) {
+			this.path.add(places.get(index));
+		}
+	}
+
+	public ArrayList<Place> getPath() {
+		return this.path;
+	}
 }

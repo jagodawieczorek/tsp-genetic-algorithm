@@ -1,9 +1,9 @@
 package tsp;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for Place
@@ -12,15 +12,15 @@ import static org.assertj.core.api.Assertions.*;
  */
 class PlaceTest {
 
-    @Test
-    @DisplayName("Should set geographical distance from one place to another")
-    void shouldSetDistanceTo() {
-        // given
-        Place startPlace = new Place(1, 71.17f, -156.47f);
-        Place endPlace = new Place(2, 64.51f, -147.43f);
-        // when
-        startPlace.setDistanceTo(endPlace);
-        // then
-        assertThat(startPlace.getDistances().get(endPlace.getId())).isEqualTo(876);
-    }
+	@Test
+	@DisplayName("Should set geographical distance from one place to another")
+	void shouldSetDistanceTo() {
+		// given
+		final Place startPlace = new Place(1, 71.17f, -156.47f);
+		final Place endPlace = new Place(2, 64.51f, -147.43f);
+		// when
+		startPlace.setDistanceTo(endPlace);
+		// then
+		assertThat(startPlace.getDistances().get(endPlace.getId())).isEqualTo(876);
+	}
 }
