@@ -27,7 +27,8 @@ public class GraspAlgorithm implements InitialGenomeAlgorithm {
 	}
 
 	@Override
-	public ArrayList<Integer> initialize(final int minGen, final int maxGen, int current, final TreeMap<Integer, Place> places) {
+	public ArrayList<Integer> initialize(final int minGen, final int maxGen, final TreeMap<Integer, Place> places) {
+		int current = places.firstKey();
 		final ArrayList<Integer> genome = new ArrayList<>();
 		genome.add(current);
 

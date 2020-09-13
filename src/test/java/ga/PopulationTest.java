@@ -21,7 +21,7 @@ class PopulationTest {
 		// given
 		final int populationSize = -10;
 		// then
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Population(populationSize, 1, null))
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Population(populationSize, null))
 				.withMessage("Population size cannot be less or equal 0");
 	}
 }

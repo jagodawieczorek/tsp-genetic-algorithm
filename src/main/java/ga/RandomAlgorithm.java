@@ -9,11 +9,10 @@ import tsp.Place;
 
 public class RandomAlgorithm implements InitialGenomeAlgorithm {
 	@Override
-	public ArrayList<Integer> initialize(final int minGen, final int maxGen, final int startingGen, final TreeMap<Integer, Place> places) {
+	public ArrayList<Integer> initialize(final int minGen, final int maxGen, final TreeMap<Integer, Place> places) {
 		final ArrayList<Integer> genome = new ArrayList<>();
 		IntStream.rangeClosed(minGen, maxGen).forEach(genome::add);
 		Collections.shuffle(genome);
-		Collections.swap(genome, 0, genome.indexOf(startingGen));
 
 		return genome;
 	}

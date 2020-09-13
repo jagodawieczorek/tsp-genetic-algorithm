@@ -28,9 +28,9 @@ public class Population {
 	public Population() {
 	}
 
-	public Population(final Population population, final TreeMap<Integer, Place> places, final float mutationProbability, final float crossoverProbability, final Selector selector,
-                      final Crossover crossover) {
-        this.individuals = new ArrayList<>();
+	public Population(final Population population, final TreeMap<Integer, Place> places, final float mutationProbability, final float crossoverProbability,
+			final Selector selector, final Crossover crossover) {
+		this.individuals = new ArrayList<>();
 		final Random random = new Random();
 		final int populationSize = population.getIndividuals().size();
 
@@ -48,7 +48,7 @@ public class Population {
 
 			individual.setFitness(places);
 
-            this.individuals.add(individual);
+			this.individuals.add(individual);
 		}
 
 		evaluate();
@@ -60,13 +60,13 @@ public class Population {
 	 * @param size
 	 *                 Population size
 	 */
-	public Population(final int size, final int startingPlace, final TreeMap<Integer, Place> places) throws IllegalArgumentException {
+	public Population(final int size, final TreeMap<Integer, Place> places) throws IllegalArgumentException {
 		if (size <= 0) {
 			throw new IllegalArgumentException("Population size cannot be less or equal 0");
 		}
 
-        this.individuals = new ArrayList<>();
-		initializeRandom(size, startingPlace, places);
+		this.individuals = new ArrayList<>();
+		initializeRandom(size, places);
 		evaluate();
 	}
 
@@ -74,8 +74,6 @@ public class Population {
 	 *
 	 * @param size
 	 *                                   population size
-	 * @param startingPlace
-	 *                                   starting place
 	 * @param places
 	 *                                   map of places
 	 * @param initialGenomeAlgorithm
@@ -83,14 +81,14 @@ public class Population {
 	 * @throws IllegalArgumentException
 	 *                                      exception
 	 */
-	public Population(final int size, final int startingPlace, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm)
+	public Population(final int size, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm)
 			throws IllegalArgumentException {
 		if (size <= 0) {
 			throw new IllegalArgumentException("Population size cannot be less or equal 0");
 		}
 
-        this.individuals = new ArrayList<>();
-		initialize(size, startingPlace, places, initialGenomeAlgorithm);
+		this.individuals = new ArrayList<>();
+		initialize(size, places, initialGenomeAlgorithm);
 		evaluate();
 	}
 
@@ -98,32 +96,28 @@ public class Population {
 	 * Initialize random population
 	 *
 	 * @param size
-	 *                          size of population
-	 * @param startingPlace
-	 *                          key of starting place
+	 *                   size of population
 	 * @param places
-	 *                          places on the map
+	 *                   places on the map
 	 * @deprecated use initialize method instead
 	 */
-	private void initializeRandom(final int size, final int startingPlace, final TreeMap<Integer, Place> places) {
+	private void initializeRandom(final int size, final TreeMap<Integer, Place> places) {
 		for (int i = 0; i < size; i++) {
-            this.individuals.add(new Individual(startingPlace, places));
+			this.individuals.add(new Individual(places));
 		}
 	}
 
 	/**
 	 * @param size
 	 *                                   size of population
-	 * @param startingPlace
-	 *                                   key of starting place
 	 * @param places
 	 *                                   places on the map
 	 * @param initialGenomeAlgorithm
 	 *                                   InitialGenomeAlgorithm implementation
 	 */
-	private void initialize(final int size, final int startingPlace, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+	private void initialize(final int size, final TreeMap<Integer, Place> places, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
 		for (int i = 0; i < size; i++) {
-            this.individuals.add(new Individual(startingPlace, places, initialGenomeAlgorithm));
+			this.individuals.add(new Individual(places, initialGenomeAlgorithm));
 		}
 	}
 
@@ -166,7 +160,7 @@ public class Population {
 		Collections.sort(sortedIndividuals);
 		final int lastIndividualIndex = (int) (part * sortedIndividuals.size());
 
-        this.bestIndividuals = sortedIndividuals.subList(lastIndividualIndex, this.individuals.size());
+		this.bestIndividuals = sortedIndividuals.subList(lastIndividualIndex, this.individuals.size());
 	}
 
 	/**
@@ -235,7 +229,7 @@ public class Population {
 
 	@Override
 	public String toString() {
-		return "Population{" + "bestFitness=" + this.bestIndividual.getFitness() + ", worstFitness=" + this.worstIndividual.getFitness() + ", avgFitness=" + this.avgFitness
-				+ '}';
+		return "Population{" + "bestFitness=" + this.bestIndividual.getFitness() + ", worstFitness=" + this.worstIndividual.getFitness() + ", avgFitness="
+				+ this.avgFitness + '}';
 	}
 }

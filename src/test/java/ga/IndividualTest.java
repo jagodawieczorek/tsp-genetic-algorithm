@@ -41,32 +41,8 @@ class IndividualTest {
 		final int maxGen = 0;
 		final int startingGen = 1;
 		// then
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Individual(minGen, maxGen, startingGen))
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Individual(minGen, maxGen))
 				.withMessage("Maximum gen value cannot be lower than minimum gen value");
-	}
-
-	@Test
-	@DisplayName("Should throw IllegalArgumentException when starting gen < min gen")
-	void shouldThrowException_whenCreatedWithStartingGenLowerThanMinGen() {
-		// given
-		final int minGen = 1;
-		final int maxGen = 20;
-		final int startingGen = 0;
-		// then
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Individual(minGen, maxGen, startingGen))
-				.withMessage("Starting gen has to be in a range <minimum gen value, maximum gen value>");
-	}
-
-	@Test
-	@DisplayName("Should throw IllegalArgumentException when starting gen > max gen")
-	void shouldThrowException_whenCreatedWithStartingGenBiggerThanMaxGen() {
-		// given
-		final int minGen = 1;
-		final int maxGen = 20;
-		final int startingGen = 40;
-		// then
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> new Individual(minGen, maxGen, startingGen))
-				.withMessage("Starting gen has to be in a range <minimum gen value, maximum gen value>");
 	}
 
 	@Test
@@ -75,7 +51,7 @@ class IndividualTest {
 		// given
 		final Individual individual = new Individual();
 		// when
-		final ArrayList<Integer> genome = individual.randomGenome(1, 137, 1);
+		final ArrayList<Integer> genome = individual.randomGenome(1, 137);
 		// then
 		assertThat(genome.size()).isEqualTo(137);
 	}
@@ -84,7 +60,7 @@ class IndividualTest {
 	@DisplayName("Should calculate fitness")
 	void shouldCalculateFitness() {
 		// given
-		final Individual individual = new Individual(1, 4, 1);
+		final Individual individual = new Individual(1, 4);
 		final TreeMap<Integer, Place> places = places();
 		// when
 		final int cost = individual.calculateFitness(places);

@@ -49,8 +49,8 @@ public class GeneticAlgorithm {
 	 *                                 Crossover type (e.g. PMX)
 	 * @deprecated Pass as the last constructor argument InitialGenomeAlgorithm
 	 */
-	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp, final Selector selector,
-                            final Crossover crossover) {
+	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
+			final TSP tsp, final Selector selector, final Crossover crossover) {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp);
 		this.selector = selector;
 		this.crossover = crossover;
@@ -78,8 +78,8 @@ public class GeneticAlgorithm {
 	 *                                   Initial Genome Algorithm (e.g. Random,
 	 *                                   GRASP, ...)
 	 */
-	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp, final Selector selector,
-                            final Crossover crossover, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
+			final TSP tsp, final Selector selector, final Crossover crossover, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, initialGenomeAlgorithm);
 		this.selector = selector;
 		this.crossover = crossover;
@@ -101,7 +101,8 @@ public class GeneticAlgorithm {
 	 *                                 Travelling salesman problem
 	 * @deprecated Pass as the last constructor argument InitialGenomeAlgorithm
 	 */
-	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp) {
+	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
+			final TSP tsp) {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability);
 		this.tsp = tsp;
 	}
@@ -124,8 +125,8 @@ public class GeneticAlgorithm {
 	 *                                   Initial Genome Algorithm (e.g. Random,
 	 *                                   GRASP, ...)
 	 */
-	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp,
-                            final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
+			final TSP tsp, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, initialGenomeAlgorithm);
 		this.tsp = tsp;
 	}
@@ -147,7 +148,7 @@ public class GeneticAlgorithm {
 	 *                                   GRASP, ...)
 	 */
 	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
-                            final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+			final InitialGenomeAlgorithm initialGenomeAlgorithm) {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability);
 		this.initialGenomeAlgorithm = initialGenomeAlgorithm;
 	}
@@ -207,8 +208,8 @@ public class GeneticAlgorithm {
 	 * @deprecated Pass to the constructor InitialGenomeAlgorithm as the last
 	 *             argument
 	 */
-	public static GeneticAlgorithm create(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp,
-                                          final Selector selector, final Crossover crossover) {
+	public static GeneticAlgorithm create(final int populationSize, final int numberOfGenerations, final float mutationProbability,
+			final float crossoverProbability, final TSP tsp, final Selector selector, final Crossover crossover) {
 		return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover);
 	}
 
@@ -233,15 +234,16 @@ public class GeneticAlgorithm {
 	 *                                   Initial genome algorithm
 	 * @return Genetic algorithm
 	 */
-	public static GeneticAlgorithm create(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability, final TSP tsp,
-                                          final Selector selector, final Crossover crossover, final InitialGenomeAlgorithm initialGenomeAlgorithm) {
+	public static GeneticAlgorithm create(final int populationSize, final int numberOfGenerations, final float mutationProbability,
+			final float crossoverProbability, final TSP tsp, final Selector selector, final Crossover crossover,
+			final InitialGenomeAlgorithm initialGenomeAlgorithm) {
 		return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover,
 				initialGenomeAlgorithm);
 	}
 
 	public Individual run() {
 		// 1. initialize first population
-		Population population = new Population(this.populationSize, this.tsp.getStartingPlace(), this.tsp.getPlaces(), this.initialGenomeAlgorithm);
+		Population population = new Population(this.populationSize, this.tsp.getPlaces(), this.initialGenomeAlgorithm);
 		LOGGER.log(Level.INFO, population.toString());
 		// 2. create generations based on previous one in a loop
 		int currentGeneration = 0;
