@@ -244,13 +244,13 @@ public class GeneticAlgorithm {
 	public Individual run() {
 		// 1. initialize first population
 		Population population = new Population(this.populationSize, this.tsp.getPlaces(), this.initialGenomeAlgorithm);
-		LOGGER.log(Level.INFO, population.toString());
+//		LOGGER.log(Level.INFO, population.toString());
 		// 2. create generations based on previous one in a loop
 		int currentGeneration = 0;
 
 		while (currentGeneration < this.numberOfGenerations) {
 			population = new Population(population, this.tsp.getPlaces(), this.mutationProbability, this.crossoverProbability, this.selector, this.crossover);
-			LOGGER.log(Level.INFO, population.toString() + " generation number: " + currentGeneration);
+//			LOGGER.log(Level.INFO, population.toString() + " generation number: " + currentGeneration);
 			currentGeneration++;
 		}
 
