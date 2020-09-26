@@ -1,6 +1,5 @@
 package ga;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import tsp.TSP;
@@ -20,6 +19,8 @@ public class GeneticAlgorithm {
 	private final float mutationProbability;
 
 	private final float crossoverProbability;
+
+	private long maxtime;
 
 	private TSP tsp;
 
@@ -83,6 +84,14 @@ public class GeneticAlgorithm {
 		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, initialGenomeAlgorithm);
 		this.selector = selector;
 		this.crossover = crossover;
+	}
+
+	public GeneticAlgorithm(final int populationSize, final int numberOfGenerations, final float mutationProbability, final float crossoverProbability,
+			final TSP tsp, final Selector selector, final Crossover crossover, final InitialGenomeAlgorithm initialGenomeAlgorithm, final long maxtime) {
+		this(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, initialGenomeAlgorithm);
+		this.selector = selector;
+		this.crossover = crossover;
+		this.maxtime = maxtime;
 	}
 
 	/**
@@ -241,17 +250,42 @@ public class GeneticAlgorithm {
 				initialGenomeAlgorithm);
 	}
 
+	public static GeneticAlgorithm create(final int populationSize, final int numberOfGenerations, final float mutationProbability,
+			final float crossoverProbability, final TSP tsp, final Selector selector, final Crossover crossover,
+			final InitialGenomeAlgorithm initialGenomeAlgorithm, final long maxtime) {
+		return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover,
+				initialGenomeAlgorithm);
+	}
+
 	public Individual run() {
 		// 1. initialize first population
 		Population population = new Population(this.populationSize, this.tsp.getPlaces(), this.initialGenomeAlgorithm);
-//		LOGGER.log(Level.INFO, population.toString());
+		// LOGGER.log(Level.INFO, population.toString());
 		// 2. create generations based on previous one in a loop
 		int currentGeneration = 0;
 
-		while (currentGeneration < this.numberOfGenerations) {
-			population = new Population(population, this.tsp.getPlaces(), this.mutationProbability, this.crossoverProbability, this.selector, this.crossover);
-//			LOGGER.log(Level.INFO, population.toString() + " generation number: " + currentGeneration);
-			currentGeneration++;
+		if (this.maxtime != 0) {
+			final long start = System.currentTimeMillis();
+			final long end = start + this.maxtime;
+			int i = 0;
+			while (System.currentTimeMillis() < end) {
+				final Population newPopulation = new Population(this.populationSize, this.tsp.getPlaces(), this.initialGenomeAlgorithm);
+				if (System.currentTimeMillis() < end) {
+					break;
+				}
+				population = newPopulation;
+				i++;
+				System.out.println("Test #" + i);
+				System.out.println(population.toString());
+			}
+			System.out.println("Execution time: " + (System.currentTimeMillis() - start));
+			System.out.println("Number of iterations: " + (i + 1));
+		} else {
+			while (currentGeneration < this.numberOfGenerations) {
+				population = new Population(population, this.tsp.getPlaces(), this.mutationProbability, this.crossoverProbability, this.selector,
+						this.crossover);
+				currentGeneration++;
+			}
 		}
 
 		return population.getBestIndividual();
