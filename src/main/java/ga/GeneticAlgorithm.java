@@ -254,7 +254,7 @@ public class GeneticAlgorithm {
 			final float crossoverProbability, final TSP tsp, final Selector selector, final Crossover crossover,
 			final InitialGenomeAlgorithm initialGenomeAlgorithm, final long maxtime) {
 		return new GeneticAlgorithm(populationSize, numberOfGenerations, mutationProbability, crossoverProbability, tsp, selector, crossover,
-				initialGenomeAlgorithm);
+				initialGenomeAlgorithm, maxtime);
 	}
 
 	public Individual run() {
